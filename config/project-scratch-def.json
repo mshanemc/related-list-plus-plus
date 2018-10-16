@@ -1,0 +1,17 @@
+{
+  "orgName": "related-list-plus-plus",
+  "edition": "Developer",
+  "hasSampleData": true,
+  "features": [
+    "LightningWebComponents"
+  ],
+  "orgPreferences": {
+    "enabled": [
+      "S1DesktopEnabled",
+      "PathAssistantsEnabled"
+    ],
+    "disabled": [
+      "S1EncryptedStoragePref2"
+    ]
+  }
+}

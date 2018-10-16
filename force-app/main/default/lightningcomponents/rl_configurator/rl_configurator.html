@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Configuration">
+      Hello, I'm a configurator
+
+      <lightning-input type="text" label="Title" name="title" onchange={dataChange}></lightning-input>
+      <lightning-input type="text" label="Icon Name" name="iconName" onchange={dataChange}></lightning-input>
+
+      <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick an Object"></lightning-combobox>
+      {output}
+      <div> title: {title} </div>
+      <div> iconName: {iconName} </div>
+      <div> recordId: {recordId} </div>
+      <div> relatedObject: {relatedObject} </div>
+
+    </lightning-card>
+</template>

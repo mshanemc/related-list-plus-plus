@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c-relatedListPlusPlus": [
+                "relatedListPlusPlus/relatedListPlusPlus.js"
+            ],
+            "c-related-list-plus-plus": [
+                "related-list-plus-plus/related-list-plus-plus.js"
+            ],
+            "c-related_list_plus_plus": [
+                "related_list_plus_plus/related_list_plus_plus.js"
+            ],
+            "c-rl_configurator": [
+                "rl_configurator/rl_configurator.js"
+            ],
+            "c-rlp_values_passdown": [
+                "rlp_values_passdown/rlp_values_passdown.js"
+            ]
+        }
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ]
+}
