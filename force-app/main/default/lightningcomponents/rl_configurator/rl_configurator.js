@@ -31,7 +31,7 @@ export default class rl_configurator extends Element {
     return this._availableFields;
   }
 
-  @api selectedFields = [];
+  @track selectedFields = [];
   @track requiredOptions = [];
 
 
@@ -57,8 +57,8 @@ export default class rl_configurator extends Element {
   @wire(getObjectInfo, { objectApiName: '$relatedObjectType' })
   wiredChildMasterData({ error, data }) {
     // window.console.log('running child master data');
-    this.selectedFields = [];
     if (data) {
+      this.selectedFields = [];
       this._availableFields = [];
       this.requiredOptions = [];
       for (const field in data.fields){
