@@ -88,7 +88,7 @@ export default class relatedListPlusPlus extends Element {
       const filteredResults = this.rawRecords.data.filter(record => {
         let matched = false;
         for (const field in record) {
-          if (record[field] && record[field].toString().includes(event.target.value)) {
+          if (record[field] && record[field].toString().toLowerCase().includes(event.target.value.toLowerCase())) {
             matched = true;
           }
         }
