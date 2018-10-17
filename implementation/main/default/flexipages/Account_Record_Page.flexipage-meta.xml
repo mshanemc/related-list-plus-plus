@@ -14,11 +14,7 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
-            <componentInstanceProperties>
-                <name>title</name>
-                <value>Contacts</value>
-            </componentInstanceProperties>
-            <componentName>related_list_plus_plus</componentName>
+            <componentName>rlp_values_passdown</componentName>
         </componentInstances>
         <componentInstances>
             <componentName>cooper:companyInsightTeaserCard</componentName>
@@ -151,9 +147,6 @@
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <componentInstances>
-            <componentName>rl_configurator</componentName>
-        </componentInstances>
         <componentInstances>
             <componentInstanceProperties>
                 <name>tabs</name>

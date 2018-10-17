@@ -1,54 +1,107 @@
 import { Element, track, api, wire } from 'engine';
-import { getRecordUi } from 'lightning-ui-api-record-ui';
+import { getRecord } from 'lightning-ui-api-record';
+import { getObjectInfo } from 'lightning-ui-api-object-info';
 
 export default class rl_configurator extends Element {
 
-  _recordId;
-  @api set recordId(value) {
-    this._recordId = [value];
-  }
-  @api get recordId() {
-    return this._recordId[0];
-  }
+  @api recordId;
+  @track _availableObjects = [];
+  @track _availableFields = [];
+  _childRelationshipField;
 
   @api title;
   @api iconName;
   @api maxRows;
-  @track availableObjects = [];
+  @api whereClause = '';
+
+  @api
+  get availableObjects() {
+    return this._availableObjects;
+  }
+
+
+  @track masterObjectType;
+  @track masterObjectInfo;
   @api relatedObject;
-  @track maxRows = 5;
-  @track availableFields = [];
-  @track selectedFields = [];
+  @api relatedObjectType;
 
-  @track output;
+  @api
+  get availableFields() {
+    return this._availableFields;
+  }
+
+  @api selectedFields = [];
 
 
-  @wire(getRecordUi, { recordIds: '$_recordId', layoutTypes: ['Full'], modes: ['View'] })
-  objectChange({error, data}){
-    if (error){
-      window.console.log(error);
-    } else if (data){
-      const output = [];
-      for (const objType in data.objectInfos){
-        if (objType !== 'User'){
-          // window.console.log(JSON.stringify(data.objectInfos[objType].childRelationships));
-          data.objectInfos[objType].childRelationships.forEach( childObject => {
-            // window.console.log(JSON.stringify(childObject));
-            output.push({ value: childObject.relationshipName, label: `${childObject.relationshipName} (${childObject.childObjectApiName})`})
-          });
-        }
-      }
-      this.availableObjects = output;
+  @wire(getRecord, { recordId: '$recordId', fields: [] })
+  wiredRecord({error, data}){
+    if (data){
+      this.masterObjectType = data.apiName;
+    }
+    window.console.log(`set master object to ${this.masterObjectType}`);
+  }
+
+  @wire(getObjectInfo, { objectApiName: '$masterObjectType' })
+  wiredMasterMetadata ({ error, data }) {
+    if (data) {
+      this.masterObjectInfo = data;
+      this._availableObjects = [];
+      data.childRelationships.forEach( cr => {
+        this._availableObjects.push({ label: `${cr.relationshipName} (${cr.childObjectApiName})`, value: cr.relationshipName})
+      });
     }
   }
 
-  dataChange(evt){
-    this[evt.target.name] = evt.target.value;
-    this.output = `heard a datachange: ${evt.target.name} is now ${evt.target.value}`;
+  @wire(getObjectInfo, { objectApiName: '$relatedObjectType' })
+  wiredChildMasterData({ error, data }) {
+    // window.console.log('running child master data');
+    if (data) {
+      this._availableFields = [];
+      for (const field in data.fields){
+        this._availableFields.push({ label: data.fields[field].label, value: field});
+      }
+      // TODO: alphabetize this?
+
+    }
+  }
+
+  dataChange(event){
+    this[event.target.name] = event.target.value;
+    this.output = `heard a datachange: ${event.target.name} is now ${event.target.value}`;
+    this.emitEventToPassdowm();
   }
 
   objectSelection(event) {
     this.relatedObject = event.detail.value;
+    this.relatedObjectType = this.masterObjectInfo.childRelationships.find( cr => cr.relationshipName === event.detail.value).childObjectApiName;
+    this.childRelationshipField = this.masterObjectInfo.childRelationships.find(cr => cr.relationshipName === event.detail.value).fieldName;
+  }
+
+  fieldsSelection(event){
+    window.console.log(`field selection is ${event.detail.value}`);
+    this.selectedFields = event.detail.value;
+    this.emitEventToPassdowm();
+  }
+
+  emitEventToPassdowm(){
+    window.console.log('firing an event from configurator!');
+    const RLConfigChange = new CustomEvent('notification', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      detail: {
+        title: this.title,
+        maxRows: this.maxRows,
+        iconName: this.iconName,
+        relatedObject: this.relatedObject,
+        relatedObjectType: this.relatedObjectType,
+        selectedFields: this.selectedFields,
+        childRelationshipField: this.childRelationshipField,
+        whereClause: this.whereClause
+      }
+    });
+
+    this.dispatchEvent(RLConfigChange);
   }
 
 }

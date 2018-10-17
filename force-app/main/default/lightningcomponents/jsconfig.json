@@ -17,6 +17,9 @@
             ],
             "c-rlp_values_passdown": [
                 "rlp_values_passdown/rlp_values_passdown.js"
+            ],
+            "c-data_table_helper": [
+                "data_table_helper/data_table_helper.js"
             ]
         }
     },

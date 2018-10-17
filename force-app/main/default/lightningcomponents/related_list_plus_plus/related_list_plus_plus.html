@@ -1,10 +1,19 @@
 <template>
-  <lightning-card title={title} icon-name={iconName}>
+  <lightning-card icon-name={iconName}>
+    <div slot="title">
+      {title}
+      <template if:true={data}>
+        ({data.length}) ({whereClause})
+      </template>
+    </div>
     <div slot="actions">
       <lightning-button-icon icon-name="utility:down"></lightning-button-icon>
     </div>
-    <div slot="body">
-      Hello, world
+    <div class="slds-p-horizontal_small">
+      <template if:true={rawRecords}>
+        <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
+        <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true"></lightning-datatable>
+      </template>
     </div>
     <div slot="footer">
       <h6>This is the footer</h6>

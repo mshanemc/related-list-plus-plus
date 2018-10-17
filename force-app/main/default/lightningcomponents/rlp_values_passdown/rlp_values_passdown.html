@@ -1,3 +1,7 @@
 <template>
-    
+
+  <c-related_list_plus_plus record-id={recordId} related-object-type={data.relatedObjectType} title={data.title} icon-name={data.iconName} max-rows={data.maxRows} fields={data.selectedFields} related-object={data.relatedObject} relationship-field={data.childRelationshipField} where-clause={data.whereClause}></c-related_list_plus_plus>
+
+  <c-rl_configurator record-id={recordId} related-object-type={data.relatedObjectType} title={data.title} icon-name={data.iconName} max-rows={data.maxRows} related-object={data.relatedObject} selected-fields={data.selectedFields} ></c-rl_configurator>
+
 </template>

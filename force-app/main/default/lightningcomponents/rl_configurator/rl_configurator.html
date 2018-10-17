@@ -1,16 +1,25 @@
 <template>
     <lightning-card title="Configuration">
-      Hello, I'm a configurator
+      <div class="slds-p-horizontal_small">
+        <lightning-input type="text" label="Title" value={title} name="title" onchange={dataChange}></lightning-input>
+        <lightning-input type="text" label="Icon Name" value={iconName} name="iconName" onchange={dataChange}></lightning-input>
 
-      <lightning-input type="text" label="Title" name="title" onchange={dataChange}></lightning-input>
-      <lightning-input type="text" label="Icon Name" name="iconName" onchange={dataChange}></lightning-input>
+        <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick an Object" value={relatedObject}></lightning-combobox>
 
-      <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick an Object"></lightning-combobox>
+        <lightning-slider min="1" max="100" name="maxRows" value={maxRows} onchange={dataChange}></lightning-slider>
+        <template if:true={relatedObjectType}>
+          <lightning-dual-listbox name="fields" label="Select Fields" options={availableFields} onchange={fieldsSelection} value={selectedFields}></lightning-dual-listbox>
+        </template>
+        <lightning-input type="text" label="SOQL Where clause" value={whereClause} name="whereClause" onchange={dataChange}></lightning-input>
+
+      </div>
+<!--
       {output}
       <div> title: {title} </div>
       <div> iconName: {iconName} </div>
       <div> recordId: {recordId} </div>
-      <div> relatedObject: {relatedObject} </div>
+      <div> relatedObject: {relatedObject} / {relatedObjectType}</div>
+      <div> availableObjects: {availableObjects.length} </div> -->
 
     </lightning-card>
 </template>
