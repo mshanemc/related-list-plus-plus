@@ -1,22 +1,38 @@
 <template>
   <lightning-card icon-name={iconName}>
+
     <div slot="title">
-      {title}
-      <template if:true={data}>
-        ({data.length})
-      </template>
+      <a href="" class="slds-card__header-link">
+        <span class="slds-card__header-title slds-m-right_xx-small">
+          {title}
+        </span>
+        <span class="slds-card__header-title">
+          <template if:true={data}>
+            ({data.length})
+          </template>
+        </span>
+      </a>
     </div>
+
     <div slot="actions">
-      <lightning-button-icon icon-name="utility:down"></lightning-button-icon>
+      <lightning-button label="New"></lightning-button>
     </div>
-    <div class="slds-p-horizontal_small">
-      <template if:true={rawRecords}>
-        <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
-        <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true"></lightning-datatable>
-      </template>
-    </div>
+
+    <template if:true={rawRecords}>
+      <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
+      <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true"></lightning-datatable>
+    </template>
+    <template if:false={rawRecords}>
+      <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
+      <!-- <c-illustration message="There's nothing here yet"></c-illustration> -->
+      There's no data here.
+    </template>
+
     <div slot="footer">
-      <h6>This is the footer</h6>
+      <a href="">
+        <h6>View All</h6>
+      </a>
     </div>
+
   </lightning-card>
 </template>

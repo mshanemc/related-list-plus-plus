@@ -20,6 +20,9 @@
             ],
             "c-data_table_helper": [
                 "data_table_helper/data_table_helper.js"
+            ],
+            "c-illustration": [
+                "illustration/illustration.js"
             ]
         }
     },
