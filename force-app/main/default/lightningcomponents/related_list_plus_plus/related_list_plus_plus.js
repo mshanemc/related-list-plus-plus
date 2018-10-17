@@ -11,12 +11,19 @@ import { tableHelper } from 'c-data_table_helper';
 
 export default class relatedListPlusPlus extends Element {
 
+  @api debug;
   @api recordId;
   @api title;
   @api iconName;
 
   @api maxRows;
   @api whereClause;
+
+  @api relatedObjectType;
+  @api relatedObject;
+  @api relationshipField;
+
+  @api recordIds;
 
   @api
   set fields(value){
@@ -25,30 +32,27 @@ export default class relatedListPlusPlus extends Element {
   }
   get fields(){ return this._fields}
   @track _fields;
-
   @track fieldsFormatted;
 
-  @api relatedObject;
-  @api relatedObjectType;
-  @api relationshipField;
-
-  @api recordIds;
   @track rawRecords;
-
   @track data;
   @track columns;
   @track sortedBy;
   @track sortedDirection;
 
-  @wire(getRecordIds, { objectType: '$relatedObjectType', relationshipField: '$relationshipField', recordId: '$recordId', maxRows: '$maxRows', whereClause: '$whereClause' })
+  constructor(){
+    super();
+    this.fields = [];
+  }
+
+  @wire(getRecordIds, { recordId: '$recordId', maxRows: '$maxRows', whereClause: '$whereClause', objectType: '$relatedObjectType', relationshipField: '$relationshipField' })
   wiredApexQuery({error, data}){
     if (error) {
       window.console.log(error);
     } else if (data) {
-      // window.console.log(JSON.parse(data));
+      window.console.log(JSON.parse(data));
       this.recordIds = JSON.parse(data).map( i => i.Id);
       window.console.log(JSON.parse(JSON.stringify(this.recordIds)));
-
     }
   }
 
@@ -64,7 +68,7 @@ export default class relatedListPlusPlus extends Element {
       this.data = this.rawRecords.data; //pure form, see bug 12 here https://gus.lightning.force.com/lightning/r/0D5B000000lKmFRKA0/view
       // this.data = this.rawRecords.data.slice(0, this.maxRows); //remove slice when apex is fixed
       this.columns = this.rawRecords.columns;
-      this.sortedBy = this.columns[0].fieldName;
+      // this.sortedBy = this.columns[0].fieldName;
       // this.recordIds = JSON.parse(data).map(i => i.Id);
       window.console.log(this.rawRecords);
     }
@@ -75,6 +79,28 @@ export default class relatedListPlusPlus extends Element {
     // this.sortedBy = event.detail.fieldName;
     // this.sortedDirection = event.detail.sortDirection;
     // this.data = this.sortData(this.sortedBy, this.sortedDirection);
+  }
+
+
+  filterChange(event){
+
+    if (event.target.value){
+      const filteredResults = this.rawRecords.data.filter(record => {
+        let matched = false;
+        for (const field in record) {
+          if (record[field] && record[field].toString().includes(event.target.value)) {
+            matched = true;
+          }
+        }
+        return matched;
+      });
+      // window.console.log(JSON.parse(JSON.stringify(filteredResults)));
+      this.data = filteredResults;
+    } else {
+      // window.console.log('filter is blank...show all');
+      this.data = this.rawRecords.data;
+    }
+
   }
 
 }

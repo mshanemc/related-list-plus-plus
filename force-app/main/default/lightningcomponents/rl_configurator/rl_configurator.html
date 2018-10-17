@@ -6,9 +6,9 @@
 
         <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick an Object" value={relatedObject}></lightning-combobox>
 
-        <lightning-slider min="1" max="100" name="maxRows" value={maxRows} onchange={dataChange}></lightning-slider>
+        <lightning-slider min="1" max="100" label="Max row Count" name="maxRows" value={maxRows} onchange={dataChange}></lightning-slider>
         <template if:true={relatedObjectType}>
-          <lightning-dual-listbox name="fields" label="Select Fields" options={availableFields} onchange={fieldsSelection} value={selectedFields}></lightning-dual-listbox>
+          <lightning-dual-listbox name="fields" label="Select Fields" options={availableFields} onchange={fieldsSelection} required-options={requiredOptions} value={selectedFields}></lightning-dual-listbox>
         </template>
         <lightning-input type="text" label="SOQL Where clause" value={whereClause} name="whereClause" onchange={dataChange}></lightning-input>
 

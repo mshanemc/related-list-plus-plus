@@ -15,22 +15,33 @@
     </div>
 
     <div slot="actions">
-      <lightning-button label="New"></lightning-button>
+      <lightning-layout>
+        <lightning-layout-item padding="around-small">
+          <lightning-input type="search" variant="label-hidden" label="Filter" name="filter" placeholder="filter" onchange={filterChange}></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small">
+          <lightning-button label="New"></lightning-button>
+        </lightning-layout-item>
+      </lightning-layout>
     </div>
 
-    <template if:true={rawRecords}>
+    <template if:true={data}>
       <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
-      <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true"></lightning-datatable>
+        <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true"></lightning-datatable>
     </template>
-    <template if:false={rawRecords}>
+    <template if:false={data}>
       <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
       <!-- <c-illustration message="There's nothing here yet"></c-illustration> -->
       There's no data here.
     </template>
 
+
     <div slot="footer">
       <a href="">
         <h6>View All</h6>
+        <template if:true={debug}>
+          {recordId}/{relatedObject}/{relatedObjectType}/{relationshipField}/{fields}/{maxRows}/{whereClause}
+        </template>
       </a>
     </div>
 

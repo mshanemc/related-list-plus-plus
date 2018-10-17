@@ -23,6 +23,9 @@
             ],
             "c-illustration": [
                 "illustration/illustration.js"
+            ],
+            "c-pubsub": [
+                "pubsub/pubsub.js"
             ]
         }
     },
