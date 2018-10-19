@@ -1,17 +1,24 @@
 <template>
     <lightning-card title="Configuration">
       <div class="slds-p-horizontal_small">
-        <lightning-input type="text" label="Title" value={title} name="title" onchange={dataChange}></lightning-input>
-        <lightning-input type="text" label="Icon Name" value={iconName} name="iconName" onchange={dataChange}></lightning-input>
-
         <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick an Object" value={relatedObject}></lightning-combobox>
 
-        <lightning-slider min="1" max="100" label="Max row Count" name="maxRows" value={maxRows} onchange={dataChange}></lightning-slider>
         <template if:true={relatedObjectType}>
           <lightning-dual-listbox name="fields" label="Fields to Show" options={availableFields} onchange={fieldsSelection} required-options={requiredOptions} value={selectedFields}></lightning-dual-listbox>
-        </template>
-        <lightning-input type="text" label="SOQL Where clause" value={whereClause} name="whereClause" onchange={dataChange}></lightning-input>
+          <lightning-input type="text" label="Title" value={title} name="title" onchange={dataChange}></lightning-input>
+          <lightning-input type="text" label="Icon Name" value={iconName} name="iconName" onchange={dataChange}></lightning-input>
 
+          <lightning-slider min="1" max="100" label="Max row Count" name="maxRows" value={maxRows} onchange={dataChange}></lightning-slider>
+
+          <lightning-input type="text" label="SOQL Where clause" value={whereClause} name="whereClause" onchange={dataChange}></lightning-input>
+
+          <lightning-dual-listbox name="fields" label="Editable Fields" options={editOptions} onchange={editableChange}></lightning-dual-listbox>
+        </template>
+
+        <!-- can't because of issue with lightning-checkbox-group -->
+        <!-- <template if:true={editOptions}>
+          <lightning-checkbox-group options={editOptions} label="Make fields editable" onchange={editChange}></lightning-checkbox-group>
+        </template> -->
       </div>
 <!--
       {output}

@@ -1,3 +1,25 @@
 sfdx force:org:create -f config/project-scratch-def.json -d 1 -s
 sfdx force:source:push
-sfdx force:org:open
+
+sfdx force:data:record:create -s Contact -v "Department='Executive Team' FirstName=Sarah LastName=McLaughlin Title=Administrator Phone='(578) 575-8724' MobilePhone='(578) 575-8724' Email=sarahmc358@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Marketing FirstName=Shannon LastName=Duffy Title='CMO' Phone='(578) 575-8723' MobilePhone='(578) 575-8723' Email=shannon@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department='Executive Team' FirstName=Perry LastName=Platypus Title='Chief Mascot' Phone='(578) 575-8725' MobilePhone='(578) 575-8725' Email=perry@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Production FirstName=Bandar LastName=El-Eita Title=VP,Manufacturing Phone='(578) 575-8727' MobilePhone='(578) 575-8727' Email=bandard@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Production FirstName=Hugh LastName=Minson Title=Bouncer Phone='(578) 575-8728' MobilePhone='(578) 575-8728' Email=hugh@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Production FirstName=Jodi LastName=Innerfield Title='Staffing Coordinator' Phone='(578) 575-8729' MobilePhone='(578) 575-8729' Email=jodi@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Pete LastName=Washington Title=Intern Email=person1@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Raul LastName=Washington Title=Intern Email=person2@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Joe LastName=Washington Title=Intern Email=person3@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Dayna LastName=Washington Title=Intern Email=person4@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Kirk LastName=Washington Title=Intern Email=person5@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Maria LastName=Washington Title=Intern Email=person6@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Billy LastName=Washington Title=Intern Email=person7@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Kanye LastName=Washington Title=Intern Email=person8@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Evan LastName=Washington Title=Intern Email=person9@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Eve LastName=Washington Title=Intern Email=person10@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Linda LastName=Washington Title=Intern Email=person11@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Jennifer LastName=Washington Title=Intern Email=person12@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Becky LastName=Washington Title=Intern Email=person13@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+sfdx force:data:record:create -s Contact -v "Department=Technology FirstName=Yolanda LastName=Washington Title=Intern Email=person14@tmail.com AccountId=`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`"
+
+sfdx force:org:open -p /lightning/r/Account/`sfdx shane:data:id:query -o Account -w "Name='United Oil & Gas Corp.'"`/view

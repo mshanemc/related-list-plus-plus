@@ -33,6 +33,8 @@ export default class rl_configurator extends Element {
 
   @track selectedFields = [];
   @track requiredOptions = [];
+  @track editOptions = [];
+  @track editableFields = [];
 
 
   @wire(getRecord, { recordId: '$recordId', fields: [] })
@@ -58,16 +60,18 @@ export default class rl_configurator extends Element {
   wiredChildMasterData({ error, data }) {
     // window.console.log('running child master data');
     if (data) {
+      this.relatedObjectMetadata = data;
+      window.console.log(JSON.parse(JSON.stringify(data)));
       this.selectedFields = [];
       this._availableFields = [];
       this.requiredOptions = [];
       for (const field in data.fields){
-        window.console.log(JSON.parse(JSON.stringify(data.fields[field])));
+        // window.console.log(JSON.parse(JSON.stringify(data.fields[field])));
         this._availableFields.push({ label: data.fields[field].label, value: field});
         if (data.fields[field].nameField){
-          window.console.log(`adding ${field} to required`);
+          // window.console.log(`adding ${field} to required`);
           this.requiredOptions.push(field);
-          window.console.log(`adding ${field} to selected`);
+          // window.console.log(`adding ${field} to selected`);
           this.selectedFields.push(field);
         }
       }
@@ -96,14 +100,35 @@ export default class rl_configurator extends Element {
     this.emitEventToPassdown();
   }
 
+  editableChange(event){
+    window.console.log(`editable fields is selection is ${event.detail.value}`);
+    this.editableFields = event.detail.value;
+    this.emitEventToPassdown();
+
+  }
+
   fieldsSelection(event){
     window.console.log(`field selection is ${event.detail.value}`);
     this.selectedFields = event.detail.value;
+    const newEditOptions = []
+    event.detail.value.forEach(field => {
+      // get the field from the recordData
+      const fieldMD = this.relatedObjectMetadata.fields[field];
+      // not the name field, not calculated
+      if (!fieldMD.nameField && !fieldMD.compound && fieldMD.controllingFields.length===0 && !fieldMD.htmlFormatted && !fieldMD.reference && fieldMD.updateable){
+        newEditOptions.push({ label: fieldMD.label, value: fieldMD.apiName});
+      }
+      // window.console.log(JSON.parse(JSON.stringify(newEditOoptions)));
+    });
+    window.console.log(JSON.parse(JSON.stringify(newEditOptions)));
+    // window.console.log(JSON.stringify(newEditOptions));
+    this.editOptions = newEditOptions;
     this.emitEventToPassdown();
+
   }
 
   emitEventToPassdown(){
-    window.console.log('firing an event from configurator!');
+    // window.console.log('firing an event from configurator!');
     const detail = {
       title: this.title,
       maxRows: this.maxRows,
@@ -112,9 +137,10 @@ export default class rl_configurator extends Element {
       relatedObjectType: this.relatedObjectType,
       selectedFields: this.selectedFields,
       childRelationshipField: this.childRelationshipField,
-      whereClause: this.whereClause || ''
+      whereClause: this.whereClause || '',
+      editableFields: this.editableFields
     }
-    window.console.log(JSON.parse(JSON.stringify(detail)));
+    // window.console.log(JSON.parse(JSON.stringify(detail)));
     pubsub.fire('configChange', detail);
   }
 

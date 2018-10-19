@@ -30,12 +30,15 @@ export default class rlp_values_passdown extends Element {
   }
 
   handleConfigChange(config) {
-    window.console.log('heard an event in passdown!');
+    // window.console.log('heard an event in passdown!');
     // implement handler logic here
     window.console.log(JSON.parse(JSON.stringify(config)));
     this.data = config;
+
     // why do I have to do this one manually?
     this.data.fields = config.selectedFields;
+    this.data.editableFields = config.editableFields;
+
     this.debugInfo = JSON.stringify(this.data);
 
   }

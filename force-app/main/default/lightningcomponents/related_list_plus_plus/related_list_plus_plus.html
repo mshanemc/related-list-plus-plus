@@ -1,49 +1,54 @@
 <template>
-  <lightning-card icon-name={iconName}>
-
-    <div slot="title">
-      <a href="" class="slds-card__header-link">
-        <span class="slds-card__header-title slds-m-right_xx-small">
-          {title}
-        </span>
-        <span class="slds-card__header-title">
-          <template if:true={data}>
-            ({data.length})
-          </template>
-        </span>
-      </a>
-    </div>
-
-    <div slot="actions">
-      <lightning-layout>
-        <lightning-layout-item padding="around-small">
-          <lightning-input type="search" variant="label-hidden" label="Filter" name="filter" placeholder="filter" onchange={filterChange}></lightning-input>
-        </lightning-layout-item>
-        <lightning-layout-item padding="around-small">
-          <lightning-button label="New"></lightning-button>
-        </lightning-layout-item>
-      </lightning-layout>
+  <article class="slds-card slds-card_boundary">
+    <div class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <lightning-icon icon-name={iconName} alternative-text={title} size="small"></lightning-icon>
+        </div>
+        <div class="slds-media__body">
+          <h2 class="slds-card__header-title">
+            <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Accounts">
+              <span class="slds-m-right_xx-small">{title}</span>
+              <template if:true={rowCount}>
+                <span>({rowCount})</span>
+              </template>
+            </a>
+          </h2>
+        </div>
+        <div class="slds-no-flex">
+          <lightning-layout>
+            <template if:true={data}>
+              <lightning-layout-item padding="around-small">
+                <lightning-input type="search" variant="label-hidden" label="Filter" name="filter" placeholder="filter" onchange={filterChange}></lightning-input>
+              </lightning-layout-item>
+            </template>
+            <lightning-layout-item padding="around-small">
+              <lightning-button label="New"></lightning-button>
+            </lightning-layout-item>
+          </lightning-layout>
+        </div>
+      </header>
     </div>
 
     <template if:true={data}>
       <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
-        <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true"></lightning-datatable>
+      <lightning-datatable data={data} key-field="Id" columns={columns} hide-checkbox-column="true" show-row-number-column="false"
+        onsave={handleSave} draft-values={draftValues} errors={tableErrors}></lightning-datatable>
     </template>
+
     <template if:false={data}>
       <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
       <!-- <c-illustration message="There's nothing here yet"></c-illustration> -->
-      There's no data here.
+      <div class="slds-align_absolute-center slds-p-bottom_medium">There's no data here.</div>
     </template>
 
+    <template if:true={data}>
+      <footer class="slds-card__footer">
+        <a class="slds-card__footer-action" href="javascript:void(0);">View All
+          <span class="slds-assistive-text">Accounts</span>
+        </a>
+      </footer>
+    </template>
+  </article>
 
-    <div slot="footer">
-      <a href="">
-        <h6>View All</h6>
-        <template if:true={debug}>
-          {recordId}/{relatedObject}/{relatedObjectType}/{relationshipField}/{fields}/{maxRows}/{whereClause}
-        </template>
-      </a>
-    </div>
-
-  </lightning-card>
 </template>

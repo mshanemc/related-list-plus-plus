@@ -3,11 +3,14 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c-relatedListPlusPlus": [
-                "relatedListPlusPlus/relatedListPlusPlus.js"
+            "c-data_table_helper": [
+                "data_table_helper/data_table_helper.js"
             ],
-            "c-related-list-plus-plus": [
-                "related-list-plus-plus/related-list-plus-plus.js"
+            "c-illustration": [
+                "illustration/illustration.js"
+            ],
+            "c-pubsub": [
+                "pubsub/pubsub.js"
             ],
             "c-related_list_plus_plus": [
                 "related_list_plus_plus/related_list_plus_plus.js"
@@ -17,15 +20,6 @@
             ],
             "c-rlp_values_passdown": [
                 "rlp_values_passdown/rlp_values_passdown.js"
-            ],
-            "c-data_table_helper": [
-                "data_table_helper/data_table_helper.js"
-            ],
-            "c-illustration": [
-                "illustration/illustration.js"
-            ],
-            "c-pubsub": [
-                "pubsub/pubsub.js"
             ]
         }
     },

@@ -2,9 +2,12 @@ import { Element, api, wire, track } from 'engine';
 import { getRecordUi } from 'lightning-ui-api-record-ui';
 import { getRecord } from 'lightning-ui-api-record';
 // import { getObjectInfo } from 'lightning-ui-api-object-info';
+import { generateRecordInputForUpdate, updateRecord } from 'lightning-ui-api-record';
+import { showToast } from 'lightning-notifications-library';
 
 
 import getRecordIds from '@salesforce/apex/relatedListQuery.getRecordIds';
+import countRecords from '@salesforce/apex/relatedListQuery.countRecords';
 // import { refreshApex } from '@salesforce/apex';
 
 import { tableHelper } from 'c-data_table_helper';
@@ -26,6 +29,16 @@ export default class relatedListPlusPlus extends Element {
   @api recordIds;
 
   @api
+  set editableFields(value){
+    this._editableFields = value;
+    this.columnChange();
+  }
+  get editableFields(){
+    return this._editableFields;
+  }
+  @track _editableFields;
+
+  @api
   set fields(value){
     this._fields = value;
     this.fieldsFormatted = value.map(field => `${this.relatedObjectType}.${field}`);
@@ -34,11 +47,19 @@ export default class relatedListPlusPlus extends Element {
   @track _fields;
   @track fieldsFormatted;
 
+  @track rowCount;
   @track rawRecords;
+  @track rawData;
   @track data;
   @track columns;
   @track sortedBy;
   @track sortedDirection;
+  @track draftValues = [];
+
+  @track tableErrors = {
+    rows: {},
+    table: {}
+  }
 
   constructor(){
     super();
@@ -56,21 +77,24 @@ export default class relatedListPlusPlus extends Element {
     }
   }
 
+  @wire(countRecords, { recordId: '$recordId', whereClause: '$whereClause', objectType: '$relatedObjectType', relationshipField: '$relationshipField' })
+  rowCountQuery({ error, data }) {
+    if (error) {
+      window.console.log(error);
+    } else if (data) {
+      this.rowCount = data;
+    }
+  }
+
   @wire(getRecordUi, { recordIds: '$recordIds', layoutTypes: ['Compact'], modes: ['View'], optionalFields: '$fieldsFormatted'})
   childRecordsResult({ error, data }) {
     if (error) {
       window.console.log(error);
     } else if (data) {
-      window.console.log(`fieldsFormatted was set to ${this.fieldsFormatted} for this call`)
-      window.console.log(JSON.parse(JSON.stringify(data)));
-      window.console.log(`going to start tablehelper with fields = ${this.fields}`);
-      this.rawRecords = tableHelper(this.fields, data);
-      this.data = this.rawRecords.data; //pure form, see bug 12 here https://gus.lightning.force.com/lightning/r/0D5B000000lKmFRKA0/view
-      // this.data = this.rawRecords.data.slice(0, this.maxRows); //remove slice when apex is fixed
-      this.columns = this.rawRecords.columns;
-      // this.sortedBy = this.columns[0].fieldName;
-      // this.recordIds = JSON.parse(data).map(i => i.Id);
-      window.console.log(this.rawRecords);
+      // window.console.log(`fieldsFormatted was set to ${this.fieldsFormatted} for this call`)
+      // window.console.log(JSON.parse(JSON.stringify(data)));
+      this.rawData =  data;
+      this.columnChange();
     }
   }
 
@@ -81,6 +105,15 @@ export default class relatedListPlusPlus extends Element {
     // this.data = this.sortData(this.sortedBy, this.sortedDirection);
   }
 
+  columnChange(){
+    // window.console.log(`going to start tablehelper with fields = ${this.fields}`);
+    this.rawRecords = tableHelper(this.fields, this.rawData, this.editableFields);
+    this.data = this.rawRecords.data; //pure form, see bug 12 here https://gus.lightning.force.com/lightning/r/0D5B000000lKmFRKA0/view
+    this.columns = this.rawRecords.columns;
+    // this.sortedBy = this.columns[0].fieldName;
+    // this.recordIds = JSON.parse(data).map(i => i.Id);
+    window.console.log(this.rawRecords);
+  }
 
   filterChange(event){
 
@@ -99,6 +132,42 @@ export default class relatedListPlusPlus extends Element {
     } else {
       // window.console.log('filter is blank...show all');
       this.data = this.rawRecords.data;
+    }
+  }
+
+
+  async handleSave (event) {
+    // this.saveDraftValues = event.detail.draftValues;
+    window.console.log(JSON.parse(JSON.stringify(event.detail.draftValues)));
+    this.draftValues = event.detail.draftValues;
+
+    const recsToUpdate = event.detail.draftValues;
+
+    for (const draft of recsToUpdate){
+      try {
+        const result = await updateRecord({ fields: draft });
+        //remove from draft values
+        this.draftValues = this.draftValues.filter( record => record.Id !== result.id);
+        showToast({
+          message: 'Update Successful',
+          variant: 'success',
+        });
+      } catch (err){
+        // do something useful with the error?
+        window.console.log('there was an error!');
+        window.console.log(err);
+        const fieldErrors = err.details.body.output.fieldErrors;
+        const firstError = fieldErrors[Object.getOwnPropertyNames(fieldErrors)[0]][0];
+
+        window.console.log(JSON.parse(JSON.stringify(firstError)));
+        showToast({
+          message: firstError.message,
+          variant: 'error',
+        });
+        // window.console.log(JSON.parse(JSON.stringify(this.tableErrors)));
+
+
+      }
     }
 
   }
