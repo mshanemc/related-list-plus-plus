@@ -10,9 +10,12 @@ import getRecordIds from '@salesforce/apex/relatedListQuery.getRecordIds';
 import countRecords from '@salesforce/apex/relatedListQuery.countRecords';
 // import { refreshApex } from '@salesforce/apex';
 
+import { NavigationMixin } from 'lightning-navigation';
+import { CurrentPageReference } from 'lightning-navigation';
+
 import { tableHelper } from 'c-data_table_helper';
 
-export default class relatedListPlusPlus extends Element {
+export default class relatedListPlusPlus extends NavigationMixin(Element) {
 
   @api debug;
   @api recordId;
@@ -65,6 +68,9 @@ export default class relatedListPlusPlus extends Element {
     super();
     this.fields = [];
   }
+
+  @wire(CurrentPageReference)
+  pageRef;
 
   @wire(getRecordIds, { recordId: '$recordId', maxRows: '$maxRows', whereClause: '$whereClause', objectType: '$relatedObjectType', relationshipField: '$relationshipField' })
   wiredApexQuery({error, data}){
