@@ -20,6 +20,9 @@
             ],
             "c-rlp_values_passdown": [
                 "rlp_values_passdown/rlp_values_passdown.js"
+            ],
+            "c-overlay_example": [
+                "overlay_example/overlay_example.js"
             ]
         }
     },

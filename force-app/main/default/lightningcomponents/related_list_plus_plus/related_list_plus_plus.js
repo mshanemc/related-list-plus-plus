@@ -12,8 +12,10 @@ import countRecords from '@salesforce/apex/relatedListQuery.countRecords';
 
 import { NavigationMixin } from 'lightning-navigation';
 import { CurrentPageReference } from 'lightning-navigation';
+import { showCustomModal } from 'lightning-overlay-library';
 
 import { tableHelper } from 'c-data_table_helper';
+import tmpl from './related_list_plus_plus.html';
 
 export default class relatedListPlusPlus extends NavigationMixin(Element) {
 
@@ -50,6 +52,7 @@ export default class relatedListPlusPlus extends NavigationMixin(Element) {
   @track _fields;
   @track fieldsFormatted;
 
+  @track masterObjectType;
   @track rowCount;
   @track rawRecords;
   @track rawData;
@@ -69,8 +72,21 @@ export default class relatedListPlusPlus extends NavigationMixin(Element) {
     this.fields = [];
   }
 
+  // W-5180125 https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07B0000005PWlwIAG/view
+  render(){
+    return tmpl;
+  }
+
   @wire(CurrentPageReference)
   pageRef;
+
+  @wire(getRecord, { recordId: '$recordId', fields: [] })
+  wiredRecord({ error, data }) {
+    if (data) {
+      this.masterObjectType = data.apiName;
+    }
+    window.console.log(`set master object to ${this.masterObjectType}`);
+  }
 
   @wire(getRecordIds, { recordId: '$recordId', maxRows: '$maxRows', whereClause: '$whereClause', objectType: '$relatedObjectType', relationshipField: '$relationshipField' })
   wiredApexQuery({error, data}){
@@ -175,7 +191,36 @@ export default class relatedListPlusPlus extends NavigationMixin(Element) {
 
       }
     }
+  }
 
+  viewAll(){
+    this[NavigationMixin.Navigate]({
+      type: 'standard__recordRelationshipPage',
+      attributes: {
+        recordId: this.recordId,
+        objectApiName: this.masterObjectType,
+        actionName: 'view',
+        relationshipApiName: this.relatedObject
+      }
+    });
+  }
+
+  handleNew() {
+    window.console.log(JSON.parse(JSON.stringify(this.template.querySelector(".modal-body"))));
+    showCustomModal({
+      header: `New ${this.relatedObjectType}`,
+      body: this.template.querySelector(".modal-body"),
+      // body: 'hey!',
+      footer: `I am a footer`,
+      showCloseButton: true,
+      // cssClass: "my-modal,my-custom-class,my-other-class",
+      closeCallback: () => {
+        showToast({
+          message: 'You closed the modal',
+          variant: 'info',
+        });
+      }
+    })
   }
 
 }
