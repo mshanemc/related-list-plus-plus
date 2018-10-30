@@ -1,3 +1,5 @@
+import { createRecordInputFilteredByEditedFields } from "lightning-ui-api-record";
+
 export function tableHelper(columnNames, raw, editableFieldNames){
 
   // window.console.log(`starting tableHelper with columnNames = ${columnNames}`);
