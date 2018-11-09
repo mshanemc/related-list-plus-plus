@@ -46,15 +46,15 @@ export function tableHelper(columnNames, raw, editableFieldNames){
             typeAttributes: {
               label: { fieldName: columnName },
               target: '_blank'
-            }
-            // sortable: true
+            },
+            sortable: true
           });
         } else {
           output.columns.push({
             label: fieldMetadata.label,
             fieldName: columnName,
-            editable: editableFieldNames.includes(fieldMetadata.apiName)
-            // sortable: true
+            editable: editableFieldNames.includes(fieldMetadata.apiName),
+            sortable: true
           });
         }
       } else {

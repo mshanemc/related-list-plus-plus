@@ -31,9 +31,9 @@
     </div>
 
     <template if:true={data}>
-      <!-- <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection}></lightning-datatable> -->
-      <lightning-datatable data={data} key-field="Id" columns={columns} hide-checkbox-column="true" show-row-number-column="false"
-        onsave={handleSave} draft-values={draftValues} errors={tableErrors}></lightning-datatable>
+      <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort} sorted-by={sortedBy} sorted-direction={sortedDirection} show-row-number-column="false" onsave={handleSave} draft-values={draftValues} errors={tableErrors}></lightning-datatable>
+      <!-- <lightning-datatable data={data} key-field="Id" columns={columns} hide-checkbox-column="true" show-row-number-column="false"
+        onsave={handleSave} draft-values={draftValues} errors={tableErrors}></lightning-datatable> -->
     </template>
 
     <template if:false={data}>
