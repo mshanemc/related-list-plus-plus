@@ -103,31 +103,26 @@ export default class relatedListPlusPlus extends Element {
     this.sortedBy = event.detail.fieldName;
     this.sortedDirection = event.detail.sortDirection;
     // this.data = this.sortData(this.sortedBy, this.sortedDirection);
-    let sorted = this.data.sort( (a,b) => {
+    let sorted = Array.from(this.data.sort( (a,b) => {
       // number stuff
       if (typeof(a[this.sortedBy]) === 'number' || typeof(b[this.sortedBy]) === 'number'){
-        window.console.log('sorting numbers');
         return a[this.sortedBy] - b[this.sortedBy];
       } else if (typeof(a[this.sortedBy]) === 'string' || typeof(b[this.sortedBy]) === 'string'){
         // string stuff
-        window.console.log('sorting strings');
         var x = a[this.sortedBy].toLowerCase();
         var y = b[this.sortedBy].toLowerCase();
         if (x < y) {
-          window.console.log(`${x} is less than ${y}`);
           return -1;
         } else if (x > y) {
-          window.console.log(`${x} is greater than ${y}`);
           return 1;
         } else {
-          window.console.log(`${x} is equal to ${y}`);
           return 0;
         }
       } else {
         window.console.log(`could not match type for ${typeof (a[this.sortedBy])}`);
       }
-    });
-    window.console.log(JSON.parse(JSON.stringify(sorted)));
+    }));
+    // window.console.log(JSON.parse(JSON.stringify(sorted)));
     if (this.sortedDirection === 'desc'){
       sorted = sorted.reverse();
     }
