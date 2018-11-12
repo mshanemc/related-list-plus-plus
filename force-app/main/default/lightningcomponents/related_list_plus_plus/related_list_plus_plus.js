@@ -99,7 +99,6 @@ export default class relatedListPlusPlus extends Element {
   }
 
   sort(event){
-    window.console.log(JSON.parse(JSON.stringify(event.detail)));
     this.sortedBy = event.detail.fieldName;
     this.sortedDirection = event.detail.sortDirection;
     // this.data = this.sortData(this.sortedBy, this.sortedDirection);
