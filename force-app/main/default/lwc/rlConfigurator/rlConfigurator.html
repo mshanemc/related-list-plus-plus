@@ -1,7 +1,7 @@
 <template>
     <lightning-card title="Configuration">
       <div class="slds-p-horizontal_small">
-        <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick an Object" value={relatedObject}></lightning-combobox>
+        <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick a Related Object" value={relatedObject}></lightning-combobox>
 
         <template if:true={relatedObjectType}>
           <lightning-dual-listbox name="fields" label="Fields to Show" options={availableFields} onchange={fieldsSelection} required-options={requiredOptions} value={selectedFields}></lightning-dual-listbox>

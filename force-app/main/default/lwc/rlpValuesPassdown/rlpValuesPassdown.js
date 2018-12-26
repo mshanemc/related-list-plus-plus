@@ -22,7 +22,9 @@ export default class rlp_values_passdown extends LightningElement {
     @api recordId;
     @api configId;
     @track debugInfo;
-    @track showConfig = false;
+
+    // TODO: make false
+    @track showConfig = true;
 
     @wire(getCMDT, { DevName: '$configId' })
     wiredApexQuery({ error, data }) {

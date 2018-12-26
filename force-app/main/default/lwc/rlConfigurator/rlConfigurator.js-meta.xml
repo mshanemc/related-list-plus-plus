@@ -4,7 +4,4 @@
     <isExposed>true</isExposed>
     <masterLabel>RelatedList++ Configuration</masterLabel>
     <description>Configures RL++</description>
-    <targets>
-      <target>lightning__RecordPage</target>
-    </targets>
 </LightningComponentBundle>

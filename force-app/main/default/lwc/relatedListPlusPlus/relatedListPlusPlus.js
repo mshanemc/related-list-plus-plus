@@ -4,8 +4,6 @@ import {
     generateRecordInputForUpdate,
     updateRecord,
 } from 'lightning/uiRecordApi';
-// import { getRecord } from 'lightning-ui-api-record';
-// import { getObjectInfo } from 'lightning-ui-api-object-info';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import getRecordIds from '@salesforce/apex/relatedListQuery.getRecordIds';

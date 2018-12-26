@@ -1,5 +1,4 @@
 import { LightningElement, track, api, wire } from 'lwc';
-import { getRecord } from 'lightning/uiRecordApi';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 
 export default class rl_configurator extends LightningElement {
@@ -18,7 +17,7 @@ export default class rl_configurator extends LightningElement {
         return this._availableObjects;
     }
 
-    @track masterObjectType;
+    @api objectApiName;
     @track masterObjectInfo;
     @api relatedObject;
     @api relatedObjectType;
@@ -33,15 +32,7 @@ export default class rl_configurator extends LightningElement {
     @track editOptions = [];
     @track editableFields = [];
 
-    @wire(getRecord, { recordId: '$recordId', fields: [] })
-    wiredRecord({ error, data }) {
-        if (data) {
-            this.masterObjectType = data.apiName;
-        }
-        window.console.log(`set master object to ${this.masterObjectType}`);
-    }
-
-    @wire(getObjectInfo, { objectApiName: '$masterObjectType' })
+    @wire(getObjectInfo, { objectApiName: '$objectApiName' })
     wiredMasterMetadata({ error, data }) {
         if (data) {
             this.masterObjectInfo = data;
