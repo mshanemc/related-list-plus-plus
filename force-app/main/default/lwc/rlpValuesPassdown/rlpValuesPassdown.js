@@ -1,5 +1,5 @@
 import { LightningElement, track, api } from 'lwc';
-import pubsub from 'c/  pubsub';
+import pubsub from 'c/pubsub';
 
 export default class rlp_values_passdown extends LightningElement {
     // constructor() {
