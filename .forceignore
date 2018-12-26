@@ -2,7 +2,14 @@
 # More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
 #
 
+# Standard metadata
 package.xml
-force-app/main/default/lightningcomponents/jsconfig.json
+**appMenu
+**appSwitcher
+**objectTranslations
+**profiles
+**settings
 
-force-app/main/default/lightningcomponents/.eslintrc.json
+**/__tests__/**
+**/jsconfig.json
+**/.eslintrc.json

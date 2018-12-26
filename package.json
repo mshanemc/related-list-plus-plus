@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
+    "lint": "npm run lint:lwc && npm run lint:aura",
+    "lint:lwc": "eslint **/lwc/**",
+    "lint:aura": "sfdx force:lightning:lint force-app/main/default/aura --exit",
+    "prettier": "npm run prettier:lwc",
+    "prettier:lwc": "prettier --write 'force-app/main/default/lwc/**'",
+    "postinstall": "node bin/check-version.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "sfdx shane:org:delete; ./orgInit.sh",
     "reset": "echo \"sfdx force:apex:execute -f scripts/dataWipe.cls && sfdx force:apex:execute -f scripts/init.cls\""
@@ -25,10 +31,28 @@
     "url": "https://github.com/mshanemc/related-list-plus-plus/issues"
   },
   "homepage": "https://github.com/mshanemc/related-list-plus-plus",
-  "devDependencies": {
-    "nodemon": "^1.18.3"
+  "engines": {
+    "node": ">= 8.9.4",
+    "npm": ">= 5.7.1"
   },
-  "dependencies": {
-    "eslint": "^5.11.0"
+  "devDependencies": {
+    "@salesforce/eslint-config-lwc": "^0.3.0",
+    "eslint": "^5.0.0",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3",
+    "semver": "^5.5.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run lint:aura"
+    }
+  },
+  "lint-staged": {
+    "**/lwc/**": [
+      "prettier --write",
+      "eslint",
+      "git add"
+    ]
   }
 }
