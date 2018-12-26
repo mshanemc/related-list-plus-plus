@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c-data_table_helper": ["data_table_helper/data_table_helper.js"],
+            "c-illustration": ["illustration/illustration.js"],
+            "c-pubsub": ["pubsub/pubsub.js"],
+            "c-related_list_plus_plus": [
+                "related_list_plus_plus/related_list_plus_plus.js"
+            ],
+            "c-rl_configurator": ["rl_configurator/rl_configurator.js"],
+            "c-rlp_values_passdown": [
+                "rlp_values_passdown/rlp_values_passdown.js"
+            ]
+        }
+    },
+    "include": ["**/*", "../../../../.sfdx/typings/lwc/**/*.d.ts"]
+}

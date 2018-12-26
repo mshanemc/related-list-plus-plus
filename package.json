@@ -36,8 +36,10 @@
     "npm": ">= 5.7.1"
   },
   "devDependencies": {
+    "@lwc/eslint-plugin-lwc": "^0.6.0",
     "@salesforce/eslint-config-lwc": "^0.3.0",
-    "eslint": "^5.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.11.0",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
     "prettier": "^1.15.3",
