@@ -1,7 +1,7 @@
 import { LightningElement, track, api, wire } from 'lwc';
-import { getRecord } from 'lightning-ui-api-record';
-import { getObjectInfo } from 'lightning-ui-api-object-info';
-import pubsub from 'c-pubsub';
+import { getRecord } from 'lightning/uiRecordApi';
+import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import pubsub from 'c/pubsub';
 
 export default class rl_configurator extends LightningElement {
     @api recordId;

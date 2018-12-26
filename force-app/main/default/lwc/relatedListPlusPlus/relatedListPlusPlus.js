@@ -12,7 +12,7 @@ import getRecordIds from '@salesforce/apex/relatedListQuery.getRecordIds';
 import countRecords from '@salesforce/apex/relatedListQuery.countRecords';
 // import { refreshApex } from '@salesforce/apex';
 
-import { tableHelper } from 'c-data_table_helper';
+import { tableHelper } from 'c/dataTableHelper';
 
 export default class relatedListPlusPlus extends LightningElement {
     @api debug;
