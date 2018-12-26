@@ -1,5 +1,8 @@
-import { LightningElement, track, api } from 'lwc';
-import pubsub from 'c/pubsub';
+import { LightningElement, track, api, wire } from 'lwc';
+import { refreshApex } from '@salesforce/apex';
+
+import getCMDT from '@salesforce/apex/relatedListQuery.getCMDT';
+import upsertCMDT from '@salesforce/apex/relatedListQuery.upsertCMDT';
 
 export default class rlp_values_passdown extends LightningElement {
     // constructor() {
@@ -15,29 +18,33 @@ export default class rlp_values_passdown extends LightningElement {
     //   }
     // }
 
-    @track data = {};
+    @track config = {};
     @api recordId;
+    @api configId;
     @track debugInfo;
+    @track showConfig = false;
 
-    connectedCallback() {
-        this.handleConfigChange = this.handleConfigChange.bind(this);
-        pubsub.register('configChange', this.handleConfigChange);
+    @wire(getCMDT, { DevName: '$configId' })
+    wiredApexQuery({ error, data }) {
+        if (error) {
+            window.console.log(error);
+        } else if (data) {
+            this.config = data;
+        }
     }
 
-    disconnectedCallback() {
-        pubsub.unregister('configChange', this.handleConfigChange);
-    }
+    async handleConfigChange(event) {
+        try {
+            // save via apex
+            await upsertCMDT({
+                DevName: this.configId,
+                JSONConfig: event.detail,
+            });
 
-    handleConfigChange(config) {
-        // window.console.log('heard an event in passdown!');
-        // implement handler logic here
-        window.console.log(JSON.parse(JSON.stringify(config)));
-        this.data = config;
-
-        // why do I have to do this one manually?
-        this.data.fields = config.selectedFields;
-        this.data.editableFields = config.editableFields;
-
-        this.debugInfo = JSON.stringify(this.data);
+            // invalidate the wire
+            await refreshApex(this.config);
+        } catch (e) {
+            console.error('apex save error', e);
+        }
     }
 }

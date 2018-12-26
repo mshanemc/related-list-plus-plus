@@ -14,9 +14,6 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
-            <componentName>rlp_values_passdown</componentName>
-        </componentInstances>
-        <componentInstances>
             <componentName>force:relatedListContainer</componentName>
         </componentInstances>
         <mode>Replace</mode>
@@ -141,9 +138,6 @@
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <componentInstances>
-            <componentName>rl_configurator</componentName>
-        </componentInstances>
         <componentInstances>
             <componentInstanceProperties>
                 <name>tabs</name>

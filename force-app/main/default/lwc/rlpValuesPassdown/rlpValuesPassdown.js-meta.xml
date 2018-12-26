@@ -7,4 +7,12 @@
       <target>lightning__RecordPage</target>
     </targets>
 
+    <masterLabel>RelatedList++</masterLabel>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="configId" type="String" required="true" label="Config ID" description="A unique identifier for storing this configuration"/>
+        </targetConfig>
+    </targetConfigs>
+
 </LightningComponentBundle>

@@ -1,7 +1,6 @@
 import { LightningElement, track, api, wire } from 'lwc';
 import { getRecord } from 'lightning/uiRecordApi';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
-import pubsub from 'c/pubsub';
 
 export default class rl_configurator extends LightningElement {
     @api recordId;
@@ -159,6 +158,7 @@ export default class rl_configurator extends LightningElement {
             editableFields: this.editableFields,
         };
         // window.console.log(JSON.parse(JSON.stringify(detail)));
-        pubsub.fire('configChange', detail);
+        // pubsub.fire('configChange', detail);
+        this.dispatchEvent(new CustomEvent('configChange', { detail }));
     }
 }

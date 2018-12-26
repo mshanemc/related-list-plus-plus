@@ -1,9 +1,17 @@
 <template>
 
+    <template if:true={configId}>
 
-  <c-related-list-plus-plus record-id={recordId} related-object-type={data.relatedObjectType} title={data.title} icon-name={data.iconName} max-rows={data.maxRows} fields={data.selectedFields} related-object={data.relatedObject} relationship-field={data.childRelationshipField} where-clause={data.whereClause} editable-fields={data.editableFields}></c-related-list-plus-plus>
+        <c-related-list-plus-plus record-id={recordId} related-object-type={config.relatedObjectType} title={config.title} icon-name={config.iconName} max-rows={config.maxRows} fields={config.selectedFields} related-object={config.relatedObject} relationship-field={config.childRelationshipField} where-clause={config.whereClause} editable-fields={config.editableFields}></c-related-list-plus-plus>
 
-  <!-- <c-rl_configurator record-id={recordId} related-object-type={data.relatedObjectType} title={data.title} icon-name={data.iconName} max-rows={data.maxRows} related-object={data.relatedObject} selected-fields={data.selectedFields} ></c-rl_configurator> -->
+        <template if:true={showConfig}>
+            <c-rl-configurator record-id={recordId} related-object-type={config.relatedObjectType} title={config.title} icon-name={config.iconName} max-rows={config.maxRows} related-object={config.relatedObject} selected-fields={config.selectedFields} onconfigchange={handleConfigChange}></c-rl-configurator>
+        </template>
+        <!-- {debugInfo} -->
+    </template>
 
-  <!-- {debugInfo} -->
+    <template if:false={configId}>
+        Add a unique config ID via App Builder.  Then save.  Then config on the page itself (not in app builder).
+    </template>
+
 </template>
