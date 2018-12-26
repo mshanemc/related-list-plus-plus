@@ -4,8 +4,7 @@
     <isExposed>true</isExposed>
     <masterLabel>RelatedList++ Configuration</masterLabel>
     <description>Configures RL++</description>
-    <tags>
-      <tag>lightning__RecordHome</tag>
-      <tag>lightning__HasRecordId</tag>
-    </tags>
+    <targets>
+      <target>lightning__RecordPage</target>
+    </targets>
 </LightningComponentBundle>

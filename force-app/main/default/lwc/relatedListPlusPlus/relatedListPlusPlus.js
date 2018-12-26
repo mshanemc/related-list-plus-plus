@@ -1,12 +1,12 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import { getRecordUi } from 'lightning-ui-api-record-ui';
-import { getRecord } from 'lightning-ui-api-record';
-// import { getObjectInfo } from 'lightning-ui-api-object-info';
 import {
+    getRecordUi,
     generateRecordInputForUpdate,
     updateRecord,
-} from 'lightning-ui-api-record';
-import { showToast } from 'lightning-notifications-library';
+} from 'lightning/uiRecordApi';
+// import { getRecord } from 'lightning-ui-api-record';
+// import { getObjectInfo } from 'lightning-ui-api-object-info';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import getRecordIds from '@salesforce/apex/relatedListQuery.getRecordIds';
 import countRecords from '@salesforce/apex/relatedListQuery.countRecords';

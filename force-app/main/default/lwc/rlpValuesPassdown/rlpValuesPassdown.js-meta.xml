@@ -3,9 +3,8 @@
     <apiVersion>45.0</apiVersion>
     <isExposed>true</isExposed>
 
-    <tags>
-      <tag>lightning__RecordHome</tag>
-      <tag>lightning__HasRecordId</tag>
-    </tags>
+    <targets>
+      <target>lightning__RecordPage</target>
+    </targets>
 
 </LightningComponentBundle>
