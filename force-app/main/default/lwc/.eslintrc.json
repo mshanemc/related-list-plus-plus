@@ -1,6 +1,7 @@
 {
     "parser": "babel-eslint",
     "plugins": ["@lwc/eslint-plugin-lwc"],
+    "extends": ["@salesforce/eslint-config-lwc/recommended"],
     "rules": {
         "@lwc/lwc/no-deprecated": "error",
         "@lwc/lwc/valid-api": "error",
