@@ -34,15 +34,15 @@ public with sharing class relatedListQuery {
         if (output.size() == 1){
             return output[0].JSON_Config__c;
         }
-        return null;
+        return '{}';
     }
 
     // updates or created cmdt to store the config
     @AuraEnabled
-    public static void upsertCMDT(String DevName, String JSONConfig ){
-        //RLPP_Config__mdt
-        List<String> fullNames = new List<String>{'RLPP_Config__mdt' + DevName };
+    public static Id upsertCMDT(String DevName, String JSONConfig ){
         Metadata.CustomMetadata recordToUpdate =  new Metadata.CustomMetadata();
+        recordToUpdate.fullName = 'RLPP_Config.' + DevName;
+        recordToUpdate.label = DevName;
 
         Metadata.CustomMetadataValue customField = new Metadata.CustomMetadataValue();
         customField.field = 'JSON_Config__c';
@@ -52,8 +52,10 @@ public with sharing class relatedListQuery {
         Metadata.DeployContainer mdContainer = new Metadata.DeployContainer();
         mdContainer.addMetadata(recordToUpdate);
 
-        Id jobId = Metadata.Operations.enqueueDeployment(mdContainer, null);
+        CustomMetadataCallback callback = new CustomMetadataCallback();
 
+        Id jobId = Metadata.Operations.enqueueDeployment(mdContainer, callback);
+        return jobId;
     }
 
 
