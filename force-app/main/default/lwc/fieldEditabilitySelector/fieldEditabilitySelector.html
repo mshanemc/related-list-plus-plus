@@ -1,0 +1,11 @@
+<template>
+
+    <template if:true={editableOptions}>
+        <!-- <lightning-checkbox-group name="editableFields" label="Editable Fields" options={editableOptions}
+        value={editableFields}
+        onchange={handleChange}></lightning-checkbox-group> -->
+        <lightning-dual-listbox label="Editable Fields" source-label="Available Fields" selected-label="Selected Fields"
+            options={editableOptions} onchange={handleChange} value={editableFields}>
+        </lightning-dual-listbox>
+    </template>
+</template>

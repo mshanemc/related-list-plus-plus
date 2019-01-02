@@ -2,12 +2,14 @@
 
     <template if:true={configId}>
 
-        <!-- <c-related-list-plus-plus record-id={recordId} related-object-type={config.relatedObjectType} title={config.title} icon-name={config.iconName} max-rows={config.maxRows} fields={config.selectedFields} related-object={config.relatedObject} relationship-field={config.childRelationshipField} where-clause={config.whereClause} editable-fields={config.editableFields}></c-related-list-plus-plus> -->
+        <template if:true={config}>
+            <c-related-list-plus-plus record-id={recordId} config={config} config-open={showConfig} onconfigure={openConfig}></c-related-list-plus-plus>
+        </template>
 
         <template if:true={showConfig}>
-            <c-rl-configurator record-id={recordId} related-object-type={config.relatedObjectType} title={config.title} icon-name={config.iconName} max-rows={config.maxRows} related-object={config.relatedObject} selected-fields={config.selectedFields} onconfigchange={handleConfigChange}></c-rl-configurator>
+            <c-rl-configurator initial-config={config} object-api-name={objectApiName} onconfigchange={handleConfigChange} onsave={save} onhide={hide}></c-rl-configurator>
         </template>
-        <!-- {debugInfo} -->
+
     </template>
 
     <template if:false={configId}>

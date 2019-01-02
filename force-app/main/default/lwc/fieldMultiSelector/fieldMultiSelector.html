@@ -1,0 +1,12 @@
+<template>
+    <template if:true={objectApiName}>
+        <lightning-dual-listbox name="fields" label="Fields to Show" source-label="Available Fields" selected-label="Selected Fields"
+                        options={availableFields} onchange={fieldsSelection} required-options={requiredOptions} value={initialSelectedFields}>
+        </lightning-dual-listbox>
+    </template>
+    <template if:false={availableFields}>
+        <div>
+            objectApiName is not set: {objectApiName}
+        </div>
+    </template>
+</template>

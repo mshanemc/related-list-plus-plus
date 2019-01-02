@@ -1,0 +1,11 @@
+<template>
+    <template if:true={availableObjects}>
+        <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick a Related Object"
+            value={initialSelectedObject}></lightning-combobox>
+    </template>
+    <template if:false={availableObjects}>
+        <div>
+            objectApiName is not set: {objectApiName}
+        </div>
+    </template>
+</template>

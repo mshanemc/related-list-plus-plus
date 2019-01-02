@@ -1,32 +1,36 @@
 <template>
     <lightning-card title="Configuration">
-      <div class="slds-p-horizontal_small">
-        <lightning-combobox name="object" label="Object" options={availableObjects} onchange={objectSelection} placeholder="Pick a Related Object" value={relatedObject}></lightning-combobox>
 
-        <template if:true={relatedObjectType}>
-          <lightning-dual-listbox name="fields" label="Fields to Show" options={availableFields} onchange={fieldsSelection} required-options={requiredOptions} value={selectedFields}></lightning-dual-listbox>
-          <lightning-input type="text" label="Title" value={title} name="title" onchange={dataChange}></lightning-input>
-          <lightning-input type="text" label="Icon Name" value={iconName} name="iconName" onchange={dataChange}></lightning-input>
+        <div slot="actions">
+            <lightning-button-group>
+                <lightning-button onclick={save} label="Save" variant="brand"></lightning-button>
+                <lightning-button-icon onclick={hide} label="Close" icon-name="utility:close" alternative-text="Close config"></lightning-button-icon>
+            </lightning-button-group>
+        </div>
 
-          <lightning-slider min="1" max="100" label="Max row Count" name="maxRows" value={maxRows} onchange={dataChange}></lightning-slider>
+        <div class="slds-p-horizontal_small">
+            <c-related-object-picker object-api-name={objectApiName} onobjectchange={objectSelection} initial-selected-object={config.relatedObjectLabel}></c-related-object-picker>
 
-          <lightning-input type="text" label="SOQL Where clause" value={whereClause} name="whereClause" onchange={dataChange}></lightning-input>
+            <template if:true={config.relatedObjectType}>
+                <c-field-multi-selector object-api-name={config.relatedObjectType} initial-selected-fields={config.selectedFields} onfieldchange={fieldsSelection}></c-field-multi-selector>
+                <c-field-editability-selector object-api-name={config.relatedObjectType} possible-fields={config.selectedFields} initial-editable-fields={config.editableFields}></c-field-editability-selector>
 
-          <lightning-dual-listbox name="fields" label="Editable Fields" options={editOptions} onchange={editableChange}></lightning-dual-listbox>
-        </template>
+                <lightning-input type="text" label="Title" value={config.title} name="title" onchange={dataChange}></lightning-input>
+                <lightning-input type="text" label="Icon Name" value={config.iconName} name="iconName" onchange={dataChange}></lightning-input>
 
-        <!-- can't because of issue with lightning-checkbox-group -->
-        <!-- <template if:true={editOptions}>
-          <lightning-checkbox-group options={editOptions} label="Make fields editable" onchange={editChange}></lightning-checkbox-group>
-        </template> -->
-      </div>
-<!--
-      {output}
-      <div> title: {title} </div>
-      <div> iconName: {iconName} </div>
-      <div> recordId: {recordId} </div>
-      <div> relatedObject: {relatedObject} / {relatedObjectType}</div>
-      <div> availableObjects: {availableObjects.length} </div> -->
+                <lightning-slider min="1" max="100" label="Max row Count" name="maxRows" value={config.maxRows} onchange={maxRowChange}></lightning-slider>
+
+                <lightning-input type="text" label="SOQL Where clause" value={config.whereClause} name="whereClause" onchange={dataChange}></lightning-input>
+
+                <!-- <lightning-dual-listbox name="fields" label="Editable Fields" options={editOptions} onchange={editableChange}></lightning-dual-listbox> -->
+
+            </template>
+
+            <!-- can't because of issue with lightning-checkbox-group -->
+            <!-- <template if:true={editOptions}>
+            <lightning-checkbox-group options={editOptions} label="Make fields editable" onchange={editChange}></lightning-checkbox-group>
+            </template> -->
+        </div>
 
     </lightning-card>
 </template>
