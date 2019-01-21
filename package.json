@@ -3,14 +3,15 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
+    "build": "sfdx shane:org:delete; ./orgInit.sh",
     "lint": "npm run lint:lwc && npm run lint:aura",
     "lint:lwc": "eslint **/lwc/**",
     "lint:aura": "sfdx force:lightning:lint force-app/main/default/aura --exit",
+    "postinstall": "node bin/check-version.js",
     "prettier": "npm run prettier:lwc",
     "prettier:lwc": "prettier --write 'force-app/main/default/lwc/**'",
-    "postinstall": "node bin/check-version.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "sfdx shane:org:delete; ./orgInit.sh",
+    "test:unit": "lwc-jest",
+    "test:unit:watch": "lwc-jest --watch",
     "reset": "echo \"sfdx force:apex:execute -f scripts/dataWipe.cls && sfdx force:apex:execute -f scripts/init.cls\""
   },
   "nodemonConfig": {
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@lwc/eslint-plugin-lwc": "^0.6.0",
     "@salesforce/eslint-config-lwc": "^0.3.0",
+    "@salesforce/lwc-jest": "^0.4.5",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.11.0",
     "husky": "^1.2.0",

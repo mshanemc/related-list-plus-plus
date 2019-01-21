@@ -1,23 +1,30 @@
 /* eslint-disable no-console */
-export function tableHelper(columnNames, raw, editableFieldNames) {
-    // window.console.log(`starting tableHelper with columnNames = ${columnNames}`);
+export function tableHelper(
+    columnNames,
+    raw,
+    editableFieldNames = [],
+    log = false,
+) {
+    //validate input
+    if (!columnNames || !raw || columnNames.length === 0) {
+        return {};
+    }
 
     const output = {
         data: [],
         columns: [],
     };
 
-    console.log(
-        'editableFieldNames',
-        JSON.parse(JSON.stringify(editableFieldNames)),
-    );
-    console.log('columnNames', JSON.parse(JSON.stringify(columnNames)));
+    if (log) {
+        console.log(
+            'editableFieldNames',
+            JSON.parse(JSON.stringify(editableFieldNames)),
+        );
+
+        console.log('columnNames', JSON.parse(JSON.stringify(columnNames)));
+    }
 
     const _columnNames = Array.from(columnNames);
-    //validate input
-    if (!columnNames || !raw || columnNames.length === 0) {
-        return {};
-    }
 
     let columnsCreated = false;
 
@@ -81,7 +88,9 @@ export function tableHelper(columnNames, raw, editableFieldNames) {
     }
 
     // only do this once, with whatever was the final row
+    if (log) {
+        console.log(JSON.parse(JSON.stringify(output)));
+    }
 
-    console.log(JSON.parse(JSON.stringify(output)));
     return output;
 }
