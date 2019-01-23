@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/data-table-helper": ["dataTableHelper/dataTableHelper.js"],
+            "c/field-editability-selector": [
+                "fieldEditabilitySelector/fieldEditabilitySelector.js"
+            ],
+            "c/field-multi-selector": [
+                "fieldMultiSelector/fieldMultiSelector.js"
+            ],
+            "c/illustration": ["illustration/illustration.js"],
+            "c/related-list-plus-plus": [
+                "relatedListPlusPlus/relatedListPlusPlus.js"
+            ],
+            "c/related-object-picker": [
+                "relatedObjectPicker/relatedObjectPicker.js"
+            ],
+            "c/rl-configurator": ["rlConfigurator/rlConfigurator.js"],
+            "c/rlp-values-passdown": ["rlpValuesPassdown/rlpValuesPassdown.js"],
+            "c/lwc-logger": ["lwcLogger/lwcLogger.js"]
+        }
+    },
+    "include": ["**/*", "../../../../.sfdx/typings/lwc/**/*.d.ts"]
+}
