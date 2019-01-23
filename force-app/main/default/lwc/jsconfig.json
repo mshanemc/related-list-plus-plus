@@ -11,6 +11,7 @@
                 "fieldMultiSelector/fieldMultiSelector.js"
             ],
             "c/illustration": ["illustration/illustration.js"],
+            "c/lwc-logger": ["lwcLogger/lwcLogger.js"],
             "c/related-list-plus-plus": [
                 "relatedListPlusPlus/relatedListPlusPlus.js"
             ],
@@ -18,8 +19,7 @@
                 "relatedObjectPicker/relatedObjectPicker.js"
             ],
             "c/rl-configurator": ["rlConfigurator/rlConfigurator.js"],
-            "c/rlp-values-passdown": ["rlpValuesPassdown/rlpValuesPassdown.js"],
-            "c/lwc-logger": ["lwcLogger/lwcLogger.js"]
+            "c/rlp-values-passdown": ["rlpValuesPassdown/rlpValuesPassdown.js"]
         }
     },
     "include": ["**/*", "../../../../.sfdx/typings/lwc/**/*.d.ts"]
