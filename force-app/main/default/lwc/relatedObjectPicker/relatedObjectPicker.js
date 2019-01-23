@@ -1,20 +1,27 @@
 /* eslint-disable no-console */
 import { LightningElement, api, track, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import { logger } from 'c/lwcLogger';
 
 export default class RelatedObjectPicker extends LightningElement {
     @api objectApiName;
+    @api log;
+    source = 'RelatedObjectPicker';
 
     //let's only set this once from external
     @api set initialSelectedObject(value) {
         if (!this._selectedObject) {
-            console.log(
-                `relatedObjectPicker: receiving selected object as ${value}`,
-            );
             this._selectedObject = value;
+            logger(
+                this.log,
+                this.source,
+                `receiving selected object as ${value}`,
+            );
         } else {
-            console.log(
-                `relatedObjectPicker: receiving selected object as ${value} but no storing because I already had one`,
+            logger(
+                this.log,
+                this.source,
+                `receiving selected object as ${value} but not storing because I already had one`,
             );
         }
     }
