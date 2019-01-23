@@ -1,4 +1,5 @@
-/* eslint-disable no-console */
+import { logger } from 'c/lwcLogger';
+
 export function tableHelper(
     columnNames,
     raw,
@@ -9,20 +10,13 @@ export function tableHelper(
     if (!columnNames || !raw || columnNames.length === 0) {
         return {};
     }
-
+    const source = 'dataTableHelper';
     const output = {
         data: [],
         columns: [],
     };
-
-    if (log) {
-        console.log(
-            'editableFieldNames',
-            JSON.parse(JSON.stringify(editableFieldNames)),
-        );
-
-        console.log('columnNames', JSON.parse(JSON.stringify(columnNames)));
-    }
+    logger(log, source, 'editableFieldNames', editableFieldNames);
+    logger(log, source, 'columnNames', columnNames);
 
     const _columnNames = Array.from(columnNames);
 
@@ -37,7 +31,6 @@ export function tableHelper(
             dataToOutput.nav = `/${recId}`;
 
             const record = raw.records[recId];
-            // window.console.log(`doing record ${recId}`);
             // iterate through the record's fields
             for (const columnName of _columnNames) {
                 // window.console.log(`doing column ${columnName}`);
@@ -53,7 +46,6 @@ export function tableHelper(
                     raw.objectInfos[record.apiName].fields[columnName];
 
                 if (!columnsCreated) {
-                    // window.console.log( `editable for ${columnName} is ${editableFieldNames.includes( fieldMetadata.apiName, )}`);
                     if (fieldMetadata.nameField) {
                         output.columns.push({
                             label: fieldMetadata.label,
@@ -88,9 +80,6 @@ export function tableHelper(
     }
 
     // only do this once, with whatever was the final row
-    if (log) {
-        console.log(JSON.parse(JSON.stringify(output)));
-    }
-
+    logger(log, source, 'dataTableHelper output', output);
     return output;
 }
