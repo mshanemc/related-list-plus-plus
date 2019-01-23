@@ -3,17 +3,34 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c-data_table_helper": ["data_table_helper/data_table_helper.js"],
-            "c-illustration": ["illustration/illustration.js"],
-            "c-pubsub": ["pubsub/pubsub.js"],
-            "c-related_list_plus_plus": [
-                "related_list_plus_plus/related_list_plus_plus.js"
+            "c/data-table-helper": [
+                "dataTableHelper/dataTableHelper.js"
             ],
-            "c-rl_configurator": ["rl_configurator/rl_configurator.js"],
-            "c-rlp_values_passdown": [
-                "rlp_values_passdown/rlp_values_passdown.js"
+            "c/field-editability-selector": [
+                "fieldEditabilitySelector/fieldEditabilitySelector.js"
+            ],
+            "c/field-multi-selector": [
+                "fieldMultiSelector/fieldMultiSelector.js"
+            ],
+            "c/illustration": [
+                "illustration/illustration.js"
+            ],
+            "c/related-list-plus-plus": [
+                "relatedListPlusPlus/relatedListPlusPlus.js"
+            ],
+            "c/related-object-picker": [
+                "relatedObjectPicker/relatedObjectPicker.js"
+            ],
+            "c/rl-configurator": [
+                "rlConfigurator/rlConfigurator.js"
+            ],
+            "c/rlp-values-passdown": [
+                "rlpValuesPassdown/rlpValuesPassdown.js"
             ]
         }
     },
-    "include": ["**/*", "../../../../.sfdx/typings/lwc/**/*.d.ts"]
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ]
 }
