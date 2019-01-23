@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import { LightningElement, api, track, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import { logger, logError } from 'c/lwcLogger';
 
 export default class FieldMultiSelector extends LightningElement {
     @api objectApiName;
@@ -14,13 +14,20 @@ export default class FieldMultiSelector extends LightningElement {
 
     // internal only to the js
     _relatedObjectMetadata;
+    source = 'fieldMultiSelector';
 
     @api set initialSelectedFields(value) {
         if (value && value.length > 0 && this._selectedFields.length === 0) {
-            this.logger('setting the initial selected fields');
+            logger(
+                this.log,
+                this.source,
+                'setting the initial selected fields',
+            );
             this._selectedFields = Array.from(value);
         } else {
-            this.logger(
+            logger(
+                this.log,
+                this.source,
                 'not setting the initial selected fields (already had)',
             );
         }
@@ -33,10 +40,14 @@ export default class FieldMultiSelector extends LightningElement {
     // when a related object is selected, check out the fields
     @wire(getObjectInfo, { objectApiName: '$objectApiName' })
     wiredChildMasterData({ error, data }) {
-        this.logger(`running child object data wire for ${this.objectApiName}`);
+        logger(
+            this.log,
+            this.source,
+            `running child object data wire for ${this.objectApiName}`,
+        );
         if (data) {
             this._relatedObjectMetadata = data;
-            this.logger('related object info', data);
+            logger(this.log, this.source, 'related object info', data);
             this.availableFields = [];
             this.requiredOptions = [];
 
@@ -46,11 +57,16 @@ export default class FieldMultiSelector extends LightningElement {
                 if (data.fields[fieldName]) {
                     allowedFields.push(fieldName);
                 } else {
-                    this.logger(`removing field ${fieldName}`);
+                    logger(this.log, `removing field ${fieldName}`);
                 }
             });
             this._selectedFields = Array.from(allowedFields);
-            this.logger('selected fields are', this._selectedFields);
+            logger(
+                this.log,
+                this.source,
+                'selected fields are',
+                this._selectedFields,
+            );
             // eslint-disable-next-line guard-for-in
             for (const field in data.fields) {
                 this.availableFields.push({
@@ -61,15 +77,25 @@ export default class FieldMultiSelector extends LightningElement {
                     this.requiredOptions.push(field);
                 }
             }
-            this.logger('available fields are', this.availableFields);
-            this.logger('required fields are', this.requiredOptions);
+            logger(
+                this.log,
+                this.source,
+                'available fields are',
+                this.availableFields,
+            );
+            logger(
+                this.log,
+                this.source,
+                'required fields are',
+                this.requiredOptions,
+            );
         } else if (error) {
-            console.error(JSON.parse(JSON.stringify(error)));
+            logError(this.log, this.source, error);
         }
     }
 
     fieldsSelection(event) {
-        this.logger('selected fields changed');
+        logger(this.log, this.source, 'selected fields changed');
         if (event.detail.value.length > 0) {
             this.dispatchEvent(
                 new CustomEvent('fieldchange', {
@@ -78,27 +104,6 @@ export default class FieldMultiSelector extends LightningElement {
                     },
                 }),
             );
-        }
-    }
-
-    logger(message, data) {
-        if (this.log) {
-            try {
-                if (data) {
-                    console.log(
-                        `fieldMultiSelector: ${message}`,
-                        JSON.parse(JSON.stringify(data)),
-                    );
-                } else {
-                    console.log(`fieldMultiSelector: ${message}`);
-                }
-            } catch (e) {
-                if (data) {
-                    console.log(`fieldMultiSelector: ${message}`, data);
-                } else {
-                    console.log(`fieldMultiSelector: ${message}`);
-                }
-            }
         }
     }
 }
