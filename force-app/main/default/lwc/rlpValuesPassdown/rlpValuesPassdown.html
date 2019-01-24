@@ -3,7 +3,7 @@
     <template if:true={configId}>
 
         <template if:true={config}>
-            <c-related-list-plus-plus record-id={recordId} config={config} config-open={showConfig} onconfigure={openConfig}></c-related-list-plus-plus>
+            <c-related-list-plus-plus record-id={recordId} object-api-name={objectApiName} config={config} config-open={showConfig} onconfigure={openConfig}></c-related-list-plus-plus>
         </template>
 
         <template if:true={showConfig}>
