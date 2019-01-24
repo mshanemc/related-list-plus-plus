@@ -1,38 +1,44 @@
-/* eslint-disable no-console */
 import { LightningElement, api, track, wire } from 'lwc';
-import {
-    getRecordUi,
-    // generateRecordInputForUpdate,
-    updateRecord,
-} from 'lightning/uiRecordApi';
+import { getRecordUi, updateRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { NavigationMixin } from 'lightning/navigation';
+// import { refreshApex } from '@salesforce/apex';
 
 import getRecordIds from '@salesforce/apex/relatedListQuery.getRecordIds';
 import countRecords from '@salesforce/apex/relatedListQuery.countRecords';
-// import { refreshApex } from '@salesforce/apex';
 
 import { tableHelper } from 'c/dataTableHelper';
+import { logger, logError } from 'c/lwcLogger';
 
-export default class relatedListPlusPlus extends LightningElement {
+export default class relatedListPlusPlus extends NavigationMixin(
+    LightningElement,
+) {
     @api recordId;
+    @api objectApiName;
     @api configOpen;
+    @api log;
 
     @track _config;
     @track fieldsFormatted;
     @track reactErrorMessage;
+    @track createForm;
 
+    source = relatedListPlusPlus;
     get showData() {
         return !this.reactErrorMessage && this.data;
     }
 
     @api
     set config(value) {
-        console.log('RL++: setting config');
-        console.log(JSON.parse(JSON.stringify(value)));
+        logger(this.log, this.source, 'setting config', value);
 
         this._config = Object.assign({}, value);
-        console.log('making the internal config');
-        console.log(JSON.parse(JSON.stringify(this._config)));
+        logger(
+            this.log,
+            this.source,
+            'making the internal config',
+            this._config,
+        );
 
         if (
             this._config.selectedFields &&
@@ -87,7 +93,12 @@ export default class relatedListPlusPlus extends LightningElement {
                 this.fieldsFormatted = this._config.selectedFields.map(
                     field => `${this._config.relatedObjectType}.${field}`,
                 );
-                console.log(JSON.parse(JSON.stringify(this.fieldsFormatted)));
+                logger(
+                    true,
+                    this.source,
+                    'rl++ fieldsFormatted',
+                    this.fieldsFormatted,
+                );
             }
             this.reactErrorMessage = undefined;
         } catch (err) {
@@ -107,7 +118,7 @@ export default class relatedListPlusPlus extends LightningElement {
     })
     wiredRawData({ error, data }) {
         if (error) {
-            console.log(error);
+            logError(true, this.source, 'error in wiredRawData, error');
         } else if (data) {
             this.rawData = data;
             this.columnChange();
@@ -246,5 +257,32 @@ export default class relatedListPlusPlus extends LightningElement {
     configure() {
         this.dispatchEvent(new Event('configure'));
         this.configOpen = true;
+    }
+
+    viewAll() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordRelationshipPage',
+            attributes: {
+                recordId: this.recordId,
+                objectApiName: this.objectApiName,
+                relationshipApiName: this._config.relatedObjectLabel,
+                actionName: 'view',
+            },
+        });
+    }
+
+    addNew() {
+        this.createForm = true;
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        const fields = event.detail.fields;
+        fields[this._config.childRelationshipField] = this.recordId;
+        this.template.querySelector('lightning-record-form').submit(fields);
+    }
+
+    async handleRecordCreated() {
+        this.createForm = false;
     }
 }
