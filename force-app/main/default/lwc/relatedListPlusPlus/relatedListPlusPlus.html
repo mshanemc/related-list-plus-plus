@@ -24,7 +24,7 @@
             </template>
             <lightning-layout-item padding="around-small">
                 <lightning-button-group>
-                    <lightning-button label="New"></lightning-button>
+                    <lightning-button label="New" onclick={addNew}></lightning-button>
                     <template if:false={configOpen}>
                         <lightning-button-icon icon-name="utility:setup" alternate-text="configure" onclick={configure}></lightning-button-icon>
                     </template>
@@ -48,6 +48,19 @@
         </div>
     </template>
 
+    <template if:true={createForm}>
+        <div class="slds-p-around_small">
+            <lightning-record-form
+            object-api-name={_config.relatedObjectType}
+            layout-type="Full"
+            mode="edit"
+            onsubmit={handleSubmit}
+            onsuccess={handleRecordCreated}
+            columns="2">
+        </lightning-record-form>
+        </div>
+    </template>
+
     <template if:true={showData}>
         <lightning-datatable data={data} key-field="id" columns={columns} hide-checkbox-column="true" onsort={sort}
             sorted-by={sortedBy} sorted-direction={sortedDirection} show-row-number-column="false" onsave={handleSave}
@@ -64,7 +77,7 @@
 
     <template if:true={data}>
       <footer class="slds-card__footer">
-        <a class="slds-card__footer-action" href="javascript:void(0);">View All
+        <a class="slds-card__footer-action" onclick={viewAll}>View All
           <span class="slds-assistive-text">Accounts</span>
         </a>
       </footer>
