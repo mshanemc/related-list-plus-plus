@@ -68,7 +68,6 @@ export default class relatedListPlusPlus extends NavigationMixin(
     };
 
     async reactToNewConfig() {
-        // TODO run parallel
         try {
             const parallelResult = await Promise.all([
                 countRecords({
