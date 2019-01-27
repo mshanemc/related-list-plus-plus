@@ -9,11 +9,11 @@
         </div>
 
         <div class="slds-p-horizontal_small">
-            <c-related-object-picker object-api-name={objectApiName} onobjectchange={objectSelection} initial-selected-object={config.relatedObjectLabel}></c-related-object-picker>
+            <c-related-object-picker object-api-name={objectApiName} onobjectchange={objectSelection} initial-selected-object={config.relatedObjectLabel} log={log}></c-related-object-picker>
 
             <template if:true={config.relatedObjectType}>
-                <c-field-multi-selector object-api-name={config.relatedObjectType} initial-selected-fields={config.selectedFields} onfieldchange={fieldsSelection}></c-field-multi-selector>
-                <c-field-editability-selector object-api-name={config.relatedObjectType} possible-fields={config.selectedFields} initial-editable-fields={config.editableFields}></c-field-editability-selector>
+                <c-field-multi-selector object-api-name={config.relatedObjectType} initial-selected-fields={config.selectedFields} onfieldchange={fieldsSelection} log={log}></c-field-multi-selector>
+                <c-field-editability-selector object-api-name={config.relatedObjectType} possible-fields={config.selectedFields} initial-editable-fields={config.editableFields} log={log}></c-field-editability-selector>
 
                 <lightning-input type="text" label="Title" value={config.title} name="title" onchange={dataChange}></lightning-input>
                 <lightning-input type="text" label="Icon Name" value={config.iconName} name="iconName" onchange={dataChange}></lightning-input>

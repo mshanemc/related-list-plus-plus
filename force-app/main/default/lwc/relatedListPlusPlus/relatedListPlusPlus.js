@@ -10,9 +10,7 @@ import countRecords from '@salesforce/apex/relatedListQuery.countRecords';
 import { tableHelper } from 'c/dataTableHelper';
 import { logger, logError } from 'c/lwcLogger';
 
-export default class relatedListPlusPlus extends NavigationMixin(
-    LightningElement,
-) {
+export default class relatedListPlusPlus extends NavigationMixin(LightningElement) {
     @api recordId;
     @api objectApiName;
     @api configOpen;
@@ -33,17 +31,9 @@ export default class relatedListPlusPlus extends NavigationMixin(
         logger(this.log, this.source, 'setting config', value);
 
         this._config = Object.assign({}, value);
-        logger(
-            this.log,
-            this.source,
-            'making the internal config',
-            this._config,
-        );
+        logger(this.log, this.source, 'making the internal config', this._config);
 
-        if (
-            this._config.selectedFields &&
-            this._config.selectedFields.length > 0
-        ) {
+        if (this._config.selectedFields && this._config.selectedFields.length > 0) {
             this.reactToNewConfig();
         }
     }
@@ -92,20 +82,14 @@ export default class relatedListPlusPlus extends NavigationMixin(
                 this.fieldsFormatted = this._config.selectedFields.map(
                     field => `${this._config.relatedObjectType}.${field}`,
                 );
-                logger(
-                    true,
-                    this.source,
-                    'rl++ fieldsFormatted',
-                    this.fieldsFormatted,
-                );
+                logger(true, this.source, 'rl++ fieldsFormatted', this.fieldsFormatted);
             }
             this.reactErrorMessage = undefined;
         } catch (err) {
             this.recordIds = undefined;
             this.rowCount = undefined;
             this.fieldsFormatted = undefined;
-            this.reactErrorMessage =
-                'Your query could not be completed as written';
+            this.reactErrorMessage = 'Your query could not be completed as written';
         }
     }
 
@@ -131,15 +115,9 @@ export default class relatedListPlusPlus extends NavigationMixin(
         let sorted = Array.from(
             this.data.sort((a, b) => {
                 // number stuff
-                if (
-                    typeof a[this.sortedBy] === 'number' ||
-                    typeof b[this.sortedBy] === 'number'
-                ) {
+                if (typeof a[this.sortedBy] === 'number' || typeof b[this.sortedBy] === 'number') {
                     return a[this.sortedBy] - b[this.sortedBy];
-                } else if (
-                    typeof a[this.sortedBy] === 'string' ||
-                    typeof b[this.sortedBy] === 'string'
-                ) {
+                } else if (typeof a[this.sortedBy] === 'string' || typeof b[this.sortedBy] === 'string') {
                     // string stuff
                     const x = a[this.sortedBy].toLowerCase();
                     const y = b[this.sortedBy].toLowerCase();
@@ -150,9 +128,7 @@ export default class relatedListPlusPlus extends NavigationMixin(
                     }
                     return 0;
                 }
-                window.console.log(
-                    `could not match type for ${typeof a[this.sortedBy]}`,
-                );
+                window.console.log(`could not match type for ${typeof a[this.sortedBy]}`);
                 return 0;
             }),
         );
@@ -165,11 +141,7 @@ export default class relatedListPlusPlus extends NavigationMixin(
 
     columnChange() {
         // window.console.log(`going to start tablehelper with fields = ${this.fields}`);
-        this.rawRecords = tableHelper(
-            this._config.selectedFields,
-            this.rawData,
-            this._config.editableFields,
-        );
+        this.rawRecords = tableHelper(this._config.selectedFields, this.rawData, this._config.editableFields);
         this.data = this.rawRecords.data; //pure form, see bug 12 here https://gus.lightning.force.com/lightning/r/0D5B000000lKmFRKA0/view
         this.columns = this.rawRecords.columns;
         // this.sortedBy = this.columns[0].fieldName;
@@ -206,9 +178,7 @@ export default class relatedListPlusPlus extends NavigationMixin(
         try {
             const result = await updateRecord({ fields: draft });
             //remove from draft values
-            this.draftValues = this.draftValues.filter(
-                record => record.Id !== result.id,
-            );
+            this.draftValues = this.draftValues.filter(record => record.Id !== result.id);
             this.dispatchEvent(
                 new ShowToastEvent({
                     message: 'Update Successful',
@@ -220,8 +190,7 @@ export default class relatedListPlusPlus extends NavigationMixin(
             window.console.log('there was an error!');
             window.console.log(err);
             const fieldErrors = err.details.body.output.fieldErrors;
-            const firstError =
-                fieldErrors[Object.getOwnPropertyNames(fieldErrors)[0]][0];
+            const firstError = fieldErrors[Object.getOwnPropertyNames(fieldErrors)[0]][0];
 
             window.console.log(JSON.parse(JSON.stringify(firstError)));
             this.dispatchEvent(
@@ -236,9 +205,7 @@ export default class relatedListPlusPlus extends NavigationMixin(
 
     async handleSave(event) {
         // this.saveDraftValues = event.detail.draftValues;
-        window.console.log(
-            JSON.parse(JSON.stringify(event.detail.draftValues)),
-        );
+        window.console.log(JSON.parse(JSON.stringify(event.detail.draftValues)));
         this.draftValues = event.detail.draftValues;
 
         const recsToUpdate = event.detail.draftValues;

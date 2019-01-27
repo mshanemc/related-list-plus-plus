@@ -12,6 +12,7 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <property name="configId" type="String" required="true" label="Config ID" description="A unique identifier for storing this configuration"/>
+            <property name="log" type="boolean" label="Log to browser console" description="check this box to help with debugging"/>
         </targetConfig>
     </targetConfigs>
 

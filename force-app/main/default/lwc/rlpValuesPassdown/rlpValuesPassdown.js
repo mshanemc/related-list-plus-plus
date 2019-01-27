@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* test cases
 1. no config at all
 2. stored config of only an object
@@ -14,6 +13,7 @@ import { LightningElement, track, api, wire } from 'lwc';
 import getCMDT from '@salesforce/apex/relatedListQuery.getCMDT';
 import upsertCMDT from '@salesforce/apex/relatedListQuery.upsertCMDT';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { logger, logError } from 'c/lwcLogger';
 
 export default class rlp_values_passdown extends LightningElement {
     baseConfig = {
@@ -29,16 +29,18 @@ export default class rlp_values_passdown extends LightningElement {
     @api objectApiName;
     @api configId;
 
+    @api log;
     @track showConfig = false;
+
+    source = 'rlp_values_passdown';
 
     @wire(getCMDT, { DevName: '$configId' })
     async wiredApexQuery({ error, data }) {
         if (error) {
-            console.error(error);
+            logError(this.log, this.source, 'apex query of cmdt', error);
         } else if (data) {
-            console.log(data);
             const result = JSON.parse(data);
-
+            logger(this.log, this.source, 'apex query of cmdt', result);
             this.config = Object.assign(this.baseConfig, result);
             // this.config.selectedFields = result.selectedFields;
         }
@@ -61,13 +63,12 @@ export default class rlp_values_passdown extends LightningElement {
             // invalidate the wire?
             // await refreshApex(this.config);
         } catch (e) {
-            console.error('apex save error', e);
+            logError(this.log, this.source, 'apex save error', e);
         }
     }
 
     handleConfigChange(event) {
-        console.log('heard config change');
-        console.log(JSON.parse(JSON.stringify(event.detail)));
+        logger(this.log, this.source, 'heard config change', event.detail);
         const newConfig = Object.assign({}, this.config, event.detail);
         // newConfig.fields = event.detail.selectedFields;
         this.config = newConfig;

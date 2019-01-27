@@ -3,11 +3,11 @@
     <template if:true={configId}>
 
         <template if:true={config}>
-            <c-related-list-plus-plus record-id={recordId} object-api-name={objectApiName} config={config} config-open={showConfig} onconfigure={openConfig}></c-related-list-plus-plus>
+            <c-related-list-plus-plus record-id={recordId} object-api-name={objectApiName} config={config} config-open={showConfig} onconfigure={openConfig} log={log}></c-related-list-plus-plus>
         </template>
 
         <template if:true={showConfig}>
-            <c-rl-configurator initial-config={config} object-api-name={objectApiName} onconfigchange={handleConfigChange} onsave={save} onhide={hide}></c-rl-configurator>
+            <c-rl-configurator initial-config={config} object-api-name={objectApiName} onconfigchange={handleConfigChange} onsave={save} onhide={hide} log={log}></c-rl-configurator>
         </template>
 
     </template>

@@ -1,9 +1,11 @@
-/* eslint-disable no-console */
 import { LightningElement, api, wire, track } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import { logger, logError } from 'c/lwcLogger';
 
 export default class FieldEditabilitySelector extends LightningElement {
     @api objectApiName;
+    @api log;
+
     _editableFields = [];
     _relatedObjectMetadata;
     _possibleFields;
@@ -13,11 +15,10 @@ export default class FieldEditabilitySelector extends LightningElement {
     @api get possibleFields() {
         return this._possibleFields;
     }
+    source = 'FieldEditabilitySelector';
 
     set possibleFields(value) {
-        console.log(
-            `FieldEditabilitySelector: possible fields set to ${value}`,
-        );
+        logger(this.log, this.source, `possible fields set to ${value}`);
         this._possibleFields = Array.from(value);
         this.generateFieldOptions();
     }
@@ -28,37 +29,28 @@ export default class FieldEditabilitySelector extends LightningElement {
 
     set initialEditableFields(value) {
         if (value && value.length > 0 && this._editableFields.length === 0) {
-            console.log(
-                `FieldEditabilitySelector: setting the initial editable fields to ${value}`,
-            );
+            logger(this.log, this.source, `setting the initial editable fields to ${value}`);
             this._editableFields = Array.from(value);
             this.generateFieldOptions();
         } else {
-            console.log(
-                'FieldEditabilitySelector: not setting the initial editable fields (already had some)',
-            );
+            logger(this.log, this.source, 'not setting the initial editable fields (already had some)');
         }
     }
 
     // when a related object is selected, check out the fields
     @wire(getObjectInfo, { objectApiName: '$objectApiName' })
     wiredChildMasterData({ error, data }) {
-        console.log(
-            `FieldEditabilitySelector: running child object data wire for ${
-                this.objectApiName
-            }`,
-        );
+        logger(this.log, this.source, `running child object data wire for ${this.objectApiName}`);
         if (data) {
             this._relatedObjectMetadata = data;
             this.generateFieldOptions();
         } else if (error) {
-            console.log(JSON.parse(JSON.stringify(error)));
+            logError(this.log, this.source, 'getObjectInfoWire', error);
         }
     }
 
     handleChange(event) {
-        console.log('FieldEditabilitySelector: selected fields changed');
-        console.log(JSON.parse(JSON.stringify(event.detail.value)));
+        logger(this.log, this.source, 'selected fields changed', event.detail.value);
         if (event.detail.value.length > 0) {
             this.dispatchEvent(
                 new CustomEvent('fieldchange', {
@@ -72,15 +64,12 @@ export default class FieldEditabilitySelector extends LightningElement {
 
     generateFieldOptions() {
         if (!this._relatedObjectMetadata) {
-            console.log('FieldEditabilitySelector: metadata not found');
+            logger(this.log, this.source, 'metadata not found');
             return;
         }
 
-        if (
-            !this._possibleFields ||
-            (!this._possibleFields && this._possibleFields.length === 0)
-        ) {
-            console.log('FieldEditabilitySelector: no possible fields');
+        if (!this._possibleFields || (!this._possibleFields && this._possibleFields.length === 0)) {
+            logger(this.log, this.source, 'no possible fields');
             return;
         }
 
@@ -93,10 +82,7 @@ export default class FieldEditabilitySelector extends LightningElement {
             //         JSON.stringify(this._relatedObjectMetadata.fields[field]),
             //     ),
             // );
-            if (
-                this.checkEditability(field, this._relatedObjectMetadata) &&
-                this.possibleFields.includes(field)
-            ) {
+            if (this.checkEditability(field, this._relatedObjectMetadata) && this.possibleFields.includes(field)) {
                 editableOptions.push({
                     label: this._relatedObjectMetadata.fields[field].label,
                     value: field,
@@ -104,21 +90,15 @@ export default class FieldEditabilitySelector extends LightningElement {
             }
         }
         this.editableOptions = Array.from(editableOptions);
-        console.log(
-            'setting editable options to',
-            JSON.parse(JSON.stringify(this.editableOptions)),
-        );
+        logger(this.log, this.source, 'setting editable options to', this.editableOptions);
+
         // take the editableOptions options...if it was already marked editable, put in the selected list
         editableOptions.forEach(field => {
             if (this._editableFields.includes(field.value)) {
                 // make it selected somehow?
             }
         });
-
-        console.log(
-            'setting editable fields to',
-            JSON.parse(JSON.stringify(this._editableFields)),
-        );
+        logger(this.log, this.source, 'setting editable options to', this._editableFields);
     }
 
     // returns boolean

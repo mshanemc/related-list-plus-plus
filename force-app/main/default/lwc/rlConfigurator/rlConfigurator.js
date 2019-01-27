@@ -1,8 +1,11 @@
-/* eslint-disable no-console */
 import { LightningElement, track, api } from 'lwc';
+import { logger } from 'c/lwcLogger';
 
 export default class rl_configurator extends LightningElement {
+    source = 'rl_configurator';
+
     @api objectApiName;
+    @api log;
     // can assume config always has a base config from the parent
     @track config = {};
 
@@ -10,17 +13,15 @@ export default class rl_configurator extends LightningElement {
     get initialConfig() {
         return this.config;
     }
+
     set initialConfig(incoming) {
         // only once (otherwise, we should have already had it!)
         if (incoming && !this.config.relatedObjectType) {
-            console.log('Configurator: receieved the following config');
-            console.log(JSON.parse(JSON.stringify(incoming)));
+            logger(this.log, this.source, 'receieved the following config', incoming);
             this.config = Object.assign({}, incoming);
-
-            console.log('Configurator: so now local config is');
-            console.log(JSON.parse(JSON.stringify(this.config)));
+            logger(this.log, this.source, 'so now local config is', this.config);
         } else {
-            console.log('Configurator: received config, but already had it');
+            logger(this.log, this.source, 'received config, but already had it');
         }
     }
 
@@ -32,7 +33,7 @@ export default class rl_configurator extends LightningElement {
 
     //  change handler for the primitive properties
     dataChange(event) {
-        console.log(`${event.target.name} is now ${event.target.value}`);
+        logger(this.log, this.source, `${event.target.name} is now ${event.target.value}`);
         this.config[event.target.name] = event.target.value;
         this.emitEventToPassdown();
     }
@@ -43,10 +44,9 @@ export default class rl_configurator extends LightningElement {
     }
 
     objectSelection(event) {
-        console.log('Configurator: heard the object changed');
+        logger(this.log, this.source, 'heard the object changed', event.detail);
         this.config.relatedObjectType = event.detail.relatedObjectApiName;
-        this.config.childRelationshipField =
-            event.detail.childRelationshipField;
+        this.config.childRelationshipField = event.detail.childRelationshipField;
         this.config.relatedObjectLabel = event.detail.relatedObjectLabel;
     }
 
@@ -56,8 +56,7 @@ export default class rl_configurator extends LightningElement {
     // }
 
     fieldsSelection(event) {
-        console.log('Configurator: heard field selection event');
-        console.log(`field selection is ${event.detail.fields}`);
+        logger(this.log, this.source, 'heard field selection event', event.detail.fields);
         this.config.selectedFields = event.detail.fields;
         this.emitEventToPassdown();
 
