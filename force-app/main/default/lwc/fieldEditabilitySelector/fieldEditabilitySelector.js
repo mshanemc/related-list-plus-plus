@@ -3,34 +3,38 @@ import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { logger, logError } from 'c/lwcLogger';
 
 export default class FieldEditabilitySelector extends LightningElement {
+    source = 'FieldEditabilitySelector';
+
     @api objectApiName;
     @api log;
 
-    _editableFields = [];
     _relatedObjectMetadata;
     _possibleFields;
+
     @track editableOptions = [];
+    @track chosenFields = [];
 
     // array of field API names that could be editable if the user wants them to be
     @api get possibleFields() {
         return this._possibleFields;
     }
-    source = 'FieldEditabilitySelector';
 
     set possibleFields(value) {
-        logger(this.log, this.source, `possible fields set to ${value}`);
-        this._possibleFields = Array.from(value);
-        this.generateFieldOptions();
+        if (value) {
+            logger(this.log, this.source, `possible fields set to ${value}`);
+            this._possibleFields = Array.from(value);
+            this.generateFieldOptions();
+        }
     }
 
     @api get initialEditableFields() {
-        return this._editableFields;
+        return this.chosenFields;
     }
 
     set initialEditableFields(value) {
-        if (value && value.length > 0 && this._editableFields.length === 0) {
+        if (value && value.length > 0 && this.chosenFields.length === 0) {
             logger(this.log, this.source, `setting the initial editable fields to ${value}`);
-            this._editableFields = Array.from(value);
+            this.chosenFields = Array.from(value);
             this.generateFieldOptions();
         } else {
             logger(this.log, this.source, 'not setting the initial editable fields (already had some)');
@@ -94,11 +98,11 @@ export default class FieldEditabilitySelector extends LightningElement {
 
         // take the editableOptions options...if it was already marked editable, put in the selected list
         editableOptions.forEach(field => {
-            if (this._editableFields.includes(field.value)) {
+            if (this.chosenFields.includes(field.value)) {
                 // make it selected somehow?
             }
         });
-        logger(this.log, this.source, 'setting editable options to', this._editableFields);
+        logger(this.log, this.source, 'setting editable options to', this.chosenFields);
     }
 
     // returns boolean

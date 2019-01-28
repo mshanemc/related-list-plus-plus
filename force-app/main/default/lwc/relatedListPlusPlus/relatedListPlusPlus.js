@@ -16,25 +16,23 @@ export default class relatedListPlusPlus extends NavigationMixin(LightningElemen
     @api configOpen;
     @api log;
 
-    @track _config;
+    @track _config = {};
     @track fieldsFormatted;
     @track reactErrorMessage;
     @track createForm;
 
-    source = relatedListPlusPlus;
+    source = 'relatedListPlusPlus';
     get showData() {
         return !this.reactErrorMessage && this.data;
     }
 
     @api
     set config(value) {
-        logger(this.log, this.source, 'setting config', value);
+        if (value) {
+            logger(this.log, this.source, 'setting config', value);
 
-        this._config = Object.assign({}, value);
-        logger(this.log, this.source, 'making the internal config', this._config);
-
-        if (this._config.selectedFields && this._config.selectedFields.length > 0) {
-            this.reactToNewConfig();
+            this._config = Object.assign({}, value);
+            logger(this.log, this.source, 'making the internal config', this._config);
         }
     }
 
@@ -57,27 +55,32 @@ export default class relatedListPlusPlus extends NavigationMixin(LightningElemen
         table: {},
     };
 
-    async reactToNewConfig() {
-        try {
-            const parallelResult = await Promise.all([
-                countRecords({
-                    recordId: this.recordId,
-                    whereClause: this._config.whereClause,
-                    objectType: this._config.relatedObjectType,
-                    relationshipField: this._config.childRelationshipField,
-                }),
-                getRecordIds({
-                    recordId: this.recordId,
-                    maxRows: this._config.maxRows,
-                    whereClause: this._config.whereClause,
-                    objectType: this._config.relatedObjectType,
-                    relationshipField: this._config.childRelationshipField,
-                }),
-            ]);
-            this.rowCount = parallelResult[0];
-            this.recordIds = JSON.parse(parallelResult[1]).map(i => i.Id);
+    @wire(countRecords, {
+        recordId: '$recordId',
+        whereClause: '$config.whereClause',
+        objectType: '$config.relatedObjectType',
+        relationshipField: '$config.childRelationshipField',
+    })
+    wiredRowCount(result) {
+        this.wiredRowCountResult = result;
+        if (result.data) {
+            this.rowCount = result.data;
+        } else if (result.error) {
+            logger.logError(this.log, this.source, 'error in recordCount query', result.error);
+        }
+    }
 
-            // rebuild fieldsFormatted
+    @wire(getRecordIds, {
+        recordId: '$recordId',
+        maxRows: '$config.maxRows',
+        whereClause: '$config.whereClause',
+        objectType: '$config.relatedObjectType',
+        relationshipField: '$config.childRelationshipField',
+    })
+    wiredRecorIds(result) {
+        this.wiredRecorIdsResult = result;
+        if (result.data) {
+            this.recordIds = JSON.parse(result.data).map(i => i.Id);
             if (this._config.selectedFields && this._config.relatedObjectType) {
                 this.fieldsFormatted = this._config.selectedFields.map(
                     field => `${this._config.relatedObjectType}.${field}`,
@@ -85,7 +88,8 @@ export default class relatedListPlusPlus extends NavigationMixin(LightningElemen
                 logger(true, this.source, 'rl++ fieldsFormatted', this.fieldsFormatted);
             }
             this.reactErrorMessage = undefined;
-        } catch (err) {
+        }
+        if (result.error) {
             this.recordIds = undefined;
             this.rowCount = undefined;
             this.fieldsFormatted = undefined;

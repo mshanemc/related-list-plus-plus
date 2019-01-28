@@ -3,17 +3,19 @@
     <template if:true={configId}>
 
         <template if:true={config}>
-            <c-related-list-plus-plus record-id={recordId} object-api-name={objectApiName} config={config} config-open={showConfig} onconfigure={openConfig} log={log}></c-related-list-plus-plus>
+            <c-related-list-plus-plus log={log} config={config} record-id={recordId} object-api-name={objectApiName} config-open={showConfig} onconfigure={openConfig}></c-related-list-plus-plus>
         </template>
 
         <template if:true={showConfig}>
-            <c-rl-configurator initial-config={config} object-api-name={objectApiName} onconfigchange={handleConfigChange} onsave={save} onhide={hide} log={log}></c-rl-configurator>
+            <c-rl-configurator  log={log} initial-config={config} object-api-name={objectApiName} onconfigchange={handleConfigChange} onsave={save} onhide={hide}></c-rl-configurator>
         </template>
 
     </template>
 
     <template if:false={configId}>
-        Add a unique config ID via App Builder.  Then save.  Then config on the page itself (not in app builder).
+        <div class="no-config-id">
+            Add a unique config ID via App Builder.  Then save.  Then leave App Builder, and customize on the page itself using the gear icon on the component.
+        </div>
     </template>
 
 </template>

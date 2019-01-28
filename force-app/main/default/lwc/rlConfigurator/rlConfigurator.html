@@ -4,7 +4,7 @@
         <div slot="actions">
             <lightning-button-group>
                 <lightning-button onclick={save} label="Save" variant="brand"></lightning-button>
-                <lightning-button-icon onclick={hide} label="Close" icon-name="utility:close" alternative-text="Close config"></lightning-button-icon>
+                <lightning-button-icon onclick={hide} icon-name="utility:close" alternative-text="Close config"></lightning-button-icon>
             </lightning-button-group>
         </div>
 
@@ -13,7 +13,7 @@
 
             <template if:true={config.relatedObjectType}>
                 <c-field-multi-selector object-api-name={config.relatedObjectType} initial-selected-fields={config.selectedFields} onfieldchange={fieldsSelection} log={log}></c-field-multi-selector>
-                <c-field-editability-selector object-api-name={config.relatedObjectType} possible-fields={config.selectedFields} initial-editable-fields={config.editableFields} log={log}></c-field-editability-selector>
+                <!-- <c-field-editability-selector object-api-name={config.relatedObjectType} possible-fields={config.selectedFields} initial-editable-fields={config.editableFields} log={log}></c-field-editability-selector> -->
 
                 <lightning-input type="text" label="Title" value={config.title} name="title" onchange={dataChange}></lightning-input>
                 <lightning-input type="text" label="Icon Name" value={config.iconName} name="iconName" onchange={dataChange}></lightning-input>

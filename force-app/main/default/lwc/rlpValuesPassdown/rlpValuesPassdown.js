@@ -24,7 +24,7 @@ export default class rlp_values_passdown extends LightningElement {
         editableFields: [],
     };
 
-    @track config;
+    @track config = this.baseConfig;
     @api recordId;
     @api objectApiName;
     @api configId;
